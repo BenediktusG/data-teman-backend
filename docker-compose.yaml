@@ -1,0 +1,13 @@
+services:
+  data-teman-mysql:
+    image: mysql:8.0
+    container_name: data-teman-mysql
+    env_file:
+    - .env
+    ports:
+      - 3307:3306
+    volumes:
+      - data-teman-mysql-data:/var/lib/mysql
+    
+volumes:
+  data-teman-mysql-data:
