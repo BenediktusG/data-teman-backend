@@ -35,6 +35,9 @@ model User {
   password String
   role UserRole @default(USER)
   registeredAt DateTime @default(now())
+
+  logs Log[]
+  token Token[]
 }
 
 model Contact {
@@ -43,18 +46,32 @@ model Contact {
   description String? @db.Text
   Address String
   birthDate DateTime @db.Date
-  photoLink String
+  photoLink String?
   createdAt DateTime @default(now())
 }
 
 model Log {
   id String @id @default(uuid())
   message String?
-  tableName String
-  action String
-  recordId String
-  meta Json
-  userId Int
+  tableName String?
+  action Action?
+  recordId String?
+  meta Json?
+  userId String?
   ip String
   createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Token {
+  id String @id @default(uuid())
+  token String @unique @db.VarChar(256)
+  userId String
+  valid Boolean @default(true)
+  expiresAt DateTime
+  usedAt DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

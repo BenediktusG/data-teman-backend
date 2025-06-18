@@ -1,0 +1,464 @@
+openapi: 3.0.3
+info:
+  title: Data Teman
+  description: Data Teman Backend App
+  version: 1.0.0
+  contact:
+    name: Benediktus Gianto Jarod
+    email: benediktus.gianto.jarod@gmail.com
+
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Authentication
+      description: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                  example: Admiral Zuhdi
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 128
+                  pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&_]{8,128}$
+      responses:
+        201:
+          description: Success register a new user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      fullName:
+                        type: string
+                        example: Admiral Zuhdi  
+                      role:
+                        type: string
+                        example: USER
+                      registeredAt:
+                        type: string
+                        format: date-time
+  /auth/login:
+    post:
+      tags:
+      - Authentication
+      description: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 128
+                  pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&_]{8,128}$
+      responses:
+        200:
+          description: Success login 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+  /auth/logout:
+    post:
+      tags:
+      - Authentication
+      description: Logout current authenticated user
+      responses:
+        200:
+          description: Success Logout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  /auth/me:
+    get:
+      tags:
+      - Authentication
+      description: Get current authenticated user information 
+      responses:
+        200:
+          description: Success get cureent user information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      fullName:
+                        type: string
+                        example: Admiral Zuhdi  
+                      role:
+                        type: string
+                        example: USER
+                      registeredAt:
+                        type: string
+                        format: date-time
+    patch:
+      tags:
+        - Authentication
+      description: Update current authenticated user information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+      responses:
+        200:
+          description: success update current authenticated user information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      fullName:
+                        type: string
+                        example: Admiral Zuhdi  
+                      role:
+                        type: string
+                        example: USER
+                      registeredAt:
+                        type: string
+                        format: date-time
+    delete:
+      tags:
+      - Authentication
+      description: Delete current authenticated user
+      responses:
+        200:
+          description: Success delete cureent authenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  /auth/password:
+    patch:
+      tags:
+      - Authentication
+      description: change current authenticated user password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+                confirmationPassword:
+                  type: string
+      responses:
+        200:
+          description: Success change password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      description: Refresh access token
+      responses:
+        200:
+          description: Success login 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+  /data:
+    post:
+      tags:
+      - Data Teman
+      description: add new Data Teman
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                address:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                photoLink:
+                  type: string
+      responses:
+        201:
+          description: Success create new data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      birthDate:
+                        type: string
+                        format: date
+                      photoLink:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
+    get:
+      tags:
+      - Data Teman
+      description: Get all data Teman
+      responses:
+        200:
+          description: Success get all data teman
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:  
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        address:
+                          type: string
+                        birthDate:
+                          type: string
+                          format: date
+                        photoLink:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date
+  /data/{dataId}:
+    put:
+      tags:
+        - Data Teman
+      description: Update specific data teman
+      parameters:
+        - $ref: '#/components/parameters/dataId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                address:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                photoLink:
+                  type: string
+      responses:
+        201:
+          description: Success create new data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      birthDate:
+                        type: string
+                        format: date
+                      photoLink:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
+    delete:
+      tags:
+        - Data Teman
+      description: Delete data teman
+      parameters:
+        - $ref: '#/components/parameters/dataId' 
+      responses:
+        200:
+          description: Success delete data teman
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string     
+  /logs:
+    get:
+      tags:
+      - Log
+      description: Get database logs
+      responses:
+        200:
+          description: Success get database logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: string
+                        message:
+                          type: string
+                        tableName:
+                          type: string
+                        action:
+                          type: string
+                        recordId:
+                          type: string
+                        meta:
+                          type: object
+                        userId:
+                          type: string
+                        ip:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: uuid
+                        
+                          
+components:
+  parameters:
+    dataId:
+      name: dataId
+      in: path   
+      required: true
+      description: The ID of Data Teman
+      schema:
+        type: string
+        format: uuid                     
