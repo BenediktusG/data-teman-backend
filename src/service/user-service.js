@@ -9,6 +9,7 @@ import { validate } from "../validation/validation";
 import bcrypt from 'bcrypt';
 import { AuthorizationError } from "../error/authorization-error";
 import { redis } from "../application/redis";
+import { application } from "express";
 
 const register = async (request, ip) => {
     const user = validate(registerUserValidation, request);
@@ -203,6 +204,22 @@ const editUserInformation = async (request, userId, ip) => {
     });
 
     return result;
+};
+
+const deleteUser = async (userId, ip) => {
+    await prismaClient.user.delete({
+        where: {
+            id: userId,
+        },
+    });
+    await logger({
+        apiEndpoint: "/auth/me",
+        message:"Delete user",
+        tableName: "User",
+        action: "DELETE",
+        userId: userId,
+        ip: ip,
+    });
 }
 
 export default {
@@ -211,4 +228,5 @@ export default {
     logout,
     getUserInformation,
     editUserInformation,
+    deleteUser,
 }

@@ -72,7 +72,19 @@ const editUserInformation = async (req, res, next) => {
         success: true,
         data: result,
     });
-}
+};
+
+const deleteUser = async (req, res, next) => {
+    await userService.deleteUser(req.userId, req.ip);
+    res.clearCookie('accessToken', { path: '/' });
+    res.clearCookie('refreshToken', { path: '/api/session' });
+    res.status(200).json({
+        success: true,
+        data: {
+            message: "delete user successful",
+        },
+    });
+};
 
 export default {
     register,
@@ -80,4 +92,5 @@ export default {
     logout,
     getUserInformation,
     editUserInformation,
+    deleteUser,
 };
