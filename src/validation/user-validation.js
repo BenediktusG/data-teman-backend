@@ -8,3 +8,8 @@ export const registerUserValidation = Joi.object({
         'any.only':'Confirmation password does not match password',
     }),
 });
+
+export const loginValidation = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+});

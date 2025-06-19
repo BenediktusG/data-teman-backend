@@ -8,11 +8,17 @@ export const errorMiddleware = async (err, req, res, next) => {
 
     if (err instanceof ClientError) {
         res.status(err.status).json({
-            message: err.message,
+            success: false,
+            error: {
+                message: err.message,
+            },
         }).end();
     } else {
         res.status(500).json({
-            errors: err.message,
+            success: false,
+            error: {
+                message: err.message,
+            },
         }).end();
     }
 }

@@ -1,7 +1,10 @@
+import { v4 } from "uuid";
 import { prismaClient } from "../application/database";
 import { logger } from "../application/logging";
+import { AuthenticationError } from "../error/authentication-error";
 import { ConflictError } from "../error/conflict-error";
-import { registerUserValidation } from "../validation/user-validation";
+import { generateToken } from "../utils/jwtUtils";
+import { loginValidation, registerUserValidation } from "../validation/user-validation";
 import { validate } from "../validation/validation";
 import bcrypt from 'bcrypt';
 
@@ -44,6 +47,47 @@ const register = async (request, ip) => {
     return result;
 };
 
+const login = async (request, ip) => {
+    const credential = validate(loginValidation, request);
+    const user = await prismaClient.user.findUnique({
+        where: {
+            email: credential.email,
+        }
+    });
+    if (!user) {
+        throw new AuthenticationError("username and password didn't match");
+    }
+    const isPasswordValid = await bcrypt.compare(credential.password, user.password);
+    if (!isPasswordValid) {
+        throw new AuthenticationError("username and password didn't match");
+    }
+    
+    const accessToken = generateToken(user);
+    const refreshToken = v4();
+
+    const result = await prismaClient.token.create({
+        token: refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+    });
+
+    await logger({
+        message:"Login user",
+        tableName: "token",
+        action: "CREATE",
+        recordId: result.id,
+        meta: result,
+        userId: user.id,
+        ip: ip,
+    });
+
+    return {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+    };
+};
+
 export default {
     register,
+    login,
 }
