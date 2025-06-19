@@ -1,5 +1,5 @@
 import { prismaClient } from "../application/database";
-import { createDataValidation } from "../validation/data-validation";
+import { createDataValidation, updateDataValidation } from "../validation/data-validation";
 import { validate } from "../validation/validation";
 
 const create = async (request, userId, ip) => {
@@ -42,7 +42,29 @@ const get = async (userId, ip) => {
     return data;
 };
 
+const update = async (request, dataId ,userId, ip) => {
+    request = validate(updateDataValidation, request);
+    const result = await prismaClient.data.update({
+        where: {
+            id: dataId,
+        },
+        data: request,
+    });
+    await logger({
+        apiEndpoint: "/data/:dataId",
+        message:"Update data teman",
+        tableName: "Data",
+        action: "UPDATE",
+        recordId: result.id,
+        meta: result,
+        userId: userId,
+        ip: ip,
+    });
+    return result;
+};
+
 export default {
     create,
     get,
+    update,
 };

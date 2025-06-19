@@ -20,7 +20,20 @@ const get = async (req, res, next) => {
     });
 };
 
+const update = async (req, res, next) => {
+    try {
+        const result = await dataService.update(req.body, req.params.dataId, req.userId, req.ip);
+        res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+
 export default {
     register,
     get,
+    update,
 };
