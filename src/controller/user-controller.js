@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
-            maxAge: 60 * 1000, 
+            maxAge: process.env.ACCESS_TOKEN_COOKIE_AGE,  
         });
 
         res.cookie('refreshToken', result.refreshToken, {
@@ -28,7 +28,7 @@ const login = async (req, res, next) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000, 
+            maxAge: process.env.REFRESH_TOKEN_COOKIE_AGE, 
         });
         res.status(200).json({
             success: true,
@@ -100,6 +100,36 @@ const changePassword = async (req, res, next) => {
     }
 };
 
+const refresh = async (req, res, next) => {
+    try {
+        const { refreshToken } = req.cookies;
+        const result = await userService.refresh(refreshToken, req.ip);
+         res.cookie('accessToken', result.accessToken, {
+            path:'/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
+            maxAge: process.env.ACCESS_TOKEN_COOKIE_AGE, 
+        });
+
+        res.cookie('refreshToken', result.refreshToken, {
+            path: '/auth/session',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
+            maxAge: process.env.REFRESH_TOKEN_COOKIE_AGE, 
+        });
+        res.status(200).json({
+            success: true,
+            data: {
+                message: "Refresh access token successful",
+            },
+        });
+    } catch (e) {
+        next(e);
+    }
+};
+
 export default {
     register,
     login,
@@ -108,4 +138,5 @@ export default {
     editUserInformation,
     deleteUser,
     changePassword,
+    refresh,
 };

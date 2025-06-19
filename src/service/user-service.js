@@ -242,6 +242,7 @@ const changePassword = async (request, userId, ip) => {
             userId: userId,
             ip: ip,
         });
+        throw new AuthenticationError('Failed to change password due to invalid old password');
     }
     const hashedPassword = await bcrypt.hash(request.newPassword, 10);
     await prismaClient.user.update({
@@ -263,6 +264,80 @@ const changePassword = async (request, userId, ip) => {
     });
 };
 
+const refresh = async (refreshToken, ip) => {
+    const token = await prismaClient.token.findUnique({
+        where: {
+            token: refreshToken,
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    role: true,
+                },
+            },
+        },
+    });
+
+    if (!token) {
+       await logger({
+            apiEndpoint: "/auth/session/refresh",
+            message:"Failed to refresh access token due to invalid access token",
+            tableName: "Token",
+            action: "CREATE",
+            ip: ip,
+        }); 
+        throw new AuthenticationError('Failed to refresh access token due to invalid refresh token');
+    }
+
+    if (!token.valid || token.expiresAt > Date.now()) {
+        token.valid = false,
+        await logger({
+            apiEndpoint: "/auth/session/refresh",
+            message:"Failed to refresh access token due to invalid access token",
+            tableName: "Token",
+            action: "CREATE",
+            userId: token.user.id,
+            ip: ip,
+        });
+        throw new AuthenticationError('Failed to refresh access token due to invalid refresh token');
+    }
+
+    await prismaClient.token.update({
+        where: {
+            token: refreshToken,
+        },
+        data: {
+            valid: false,
+            expiresAt: Date.now(),
+        },
+    }); 
+
+    const accessToken = generateToken(token.user);
+    const newRefreshToken = v4();
+
+    const result = await prismaClient.token.create({
+        token: newRefreshToken,
+        userId: token.user.id,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+    });
+
+    await logger({
+        apiEndpoint: "/auth/session/refresh",
+        message:"Refresh access token",
+        tableName: "token",
+        action: "CREATE",
+        recordId: result.id,
+        meta: result,
+        userId: token.user.id,
+        ip: ip,
+    });
+    return {
+        refreshToken: newRefreshToken,
+        accessToken: accessToken,
+    };
+};
+
 export default {
     register,
     login,
@@ -271,4 +346,5 @@ export default {
     editUserInformation,
     deleteUser,
     changePassword,
+    refresh,
 }
