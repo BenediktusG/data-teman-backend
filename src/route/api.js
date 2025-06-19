@@ -15,3 +15,4 @@ userRouter.patch('/auth/password', userController.changePassword);
 
 // Data API
 userRouter.post('/data', dataController.register);
+userRouter.get('/data', dataController.get);

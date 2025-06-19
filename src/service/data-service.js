@@ -21,6 +21,28 @@ const create = async (request, userId, ip) => {
     return result;
 };
 
+const get = async (userId, ip) => {
+    const { data } = await prismaClient.user.findUnique({
+        where: {
+            id: userId,
+        },
+        include: {
+            data: true,
+        }
+    });
+    await logger({
+        apiEndpoint: "/data",
+        message:"Get all data teman",
+        tableName: "Data",
+        action: "GET",
+        meta: data,
+        userId: userId,
+        ip: ip,
+    });
+    return data;
+};
+
 export default {
     create,
-}
+    get,
+};

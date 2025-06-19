@@ -12,6 +12,15 @@ const register = async (req, res, next) => {
     }
 };
 
+const get = async (req, res, next) => {
+    const result = await dataService.get(req.userId, req.ip);
+    res.status(200).json({
+        success: true,
+        data: result,
+    });
+};
+
 export default {
     register,
+    get,
 };
