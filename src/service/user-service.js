@@ -4,7 +4,7 @@ import { logger } from "../application/logging";
 import { AuthenticationError } from "../error/authentication-error";
 import { ConflictError } from "../error/conflict-error";
 import { generateToken } from "../utils/jwtUtils";
-import { loginValidation, registerUserValidation } from "../validation/user-validation";
+import { editUserInformationValidation, loginValidation, registerUserValidation } from "../validation/user-validation";
 import { validate } from "../validation/validation";
 import bcrypt from 'bcrypt';
 import { AuthorizationError } from "../error/authorization-error";
@@ -145,7 +145,7 @@ const logout = async (userId, refreshToken, accessToken ,ip) => {
         ip: ip,
     });
     redis.set(`blacklistedAccessToken:${accessToken}`, "1", 'EX', process.env.REDIS_TTL);
-}
+};
 
 const getUserInformation = async (userId, ip) => {
     const result = await prismaClient.user.findUnique({
@@ -171,6 +171,38 @@ const getUserInformation = async (userId, ip) => {
         ip: ip,
     });
     return result;
+};
+
+const editUserInformation = async (request, userId, ip) => {
+    const { fullName } = validate(editUserInformationValidation, request);
+    const result = await prismaClient.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            fullName: fullName,
+        },
+        select: {
+            id: true,
+            fullName: true,
+            email: true,
+            role: true,
+            registeredAt: true,
+        },
+    });
+
+    await logger({
+        apiEndpoint: "/auth/me",
+        message:"Update user information",
+        tableName: "User",
+        action: "UPDATE",
+        recordId: result.id,
+        meta: result,
+        userId: userId,
+        ip: ip,
+    });
+
+    return result;
 }
 
 export default {
@@ -178,4 +210,5 @@ export default {
     login,
     logout,
     getUserInformation,
+    editUserInformation,
 }

@@ -66,9 +66,18 @@ const getUserInformation = async (req, res, next) => {
     });
 };
 
+const editUserInformation = async (req, res, next) => {
+    const result = await userService.editUserInformation(req.body, req.userId, req.ip);
+    res.status(200).json({
+        success: true,
+        data: result,
+    });
+}
+
 export default {
     register,
     login,
     logout,
     getUserInformation,
+    editUserInformation,
 };

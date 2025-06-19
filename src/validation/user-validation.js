@@ -13,3 +13,7 @@ export const loginValidation = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
 });
+
+export const editUserInformationValidation = Joi.object({
+    fullName: Joi.string.min(1).max(191).patern(/^[A-Za-zÀ-ÿ]+(?:[' -][A-Za-zÀ-ÿ]+)*$/).required(),
+});
