@@ -7,6 +7,8 @@ import { generateToken } from "../utils/jwtUtils";
 import { loginValidation, registerUserValidation } from "../validation/user-validation";
 import { validate } from "../validation/validation";
 import bcrypt from 'bcrypt';
+import { AuthorizationError } from "../error/authorization-error";
+import { redis } from "../application/redis";
 
 const register = async (request, ip) => {
     const user = validate(registerUserValidation, request);
@@ -87,7 +89,35 @@ const login = async (request, ip) => {
     };
 };
 
+const logout = async (userId, refreshToken, accessToken ,ip) => {
+    const token = await prismaClient.token.findUnique({
+        where: {
+            token: refreshToken,
+        }
+    });
+    if (token.userId !== userId) {
+        throw new AuthorizationError('You are not authorized to this action');
+    }
+    const result = await prismaClient.token.update({
+        data: {
+            valid: false,
+            usedAt: new Date(),
+        },
+    });
+    await logger({
+        message:"User Logout",
+        tableName: "token",
+        action: "UPDATE",
+        recordId: result.id,
+        meta: result,
+        userId: userId,
+        ip: ip,
+    });
+    redis.set(`blacklistedAccessToken:${accessToken}`, "1", 'EX', process.env.REDIS_TTL);
+}
+
 export default {
     register,
     login,
+    logout,
 }

@@ -1,9 +1,11 @@
 import express from 'express';
 import { publicRouter } from '../route/public-api';
 import { errorMiddleware } from '../middleware/error-middleware';
+import cookieParser from 'cookie-parser';
 
 export const web = express();
 
+web.use(cookieParser());
 web.use(express.json());
 web.set('trust proxy', true);
 web.use((req, res, next) => {
@@ -11,4 +13,9 @@ web.use((req, res, next) => {
     next();
 });
 web.use(publicRouter);
+web.use(publicRouter);
 web.use(errorMiddleware);
+
+web.listen(PORT, () => {
+    console.log('Application is running');
+});
