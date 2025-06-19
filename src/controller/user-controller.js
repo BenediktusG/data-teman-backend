@@ -86,6 +86,20 @@ const deleteUser = async (req, res, next) => {
     });
 };
 
+const changePassword = async (req, res, next) => {
+    try {
+        await userService.changePassword(req.body, req.userId, req.ip);
+        res.status(200).json({
+            success: true,
+            data: {
+                message: "Change password successful",
+            },
+        });
+    } catch (e) {
+        next(e);
+    }
+};
+
 export default {
     register,
     login,
@@ -93,4 +107,5 @@ export default {
     getUserInformation,
     editUserInformation,
     deleteUser,
+    changePassword,
 };

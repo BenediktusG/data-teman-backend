@@ -6,3 +6,4 @@ userRouter.post('/auth/session/logout', userController.logout);
 userRouter.get('/auth/me', userController.getUserInformation);
 userRouter.patch('/auth/me', userController.editUserInformation);
 userRouter.delete('/auth/me', userController.deleteUser);
+userRouter.patch('/auth/password', userController.changePassword);

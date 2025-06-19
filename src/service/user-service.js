@@ -4,7 +4,7 @@ import { logger } from "../application/logging";
 import { AuthenticationError } from "../error/authentication-error";
 import { ConflictError } from "../error/conflict-error";
 import { generateToken } from "../utils/jwtUtils";
-import { editUserInformationValidation, loginValidation, registerUserValidation } from "../validation/user-validation";
+import { changePasswordValidation, editUserInformationValidation, loginValidation, registerUserValidation } from "../validation/user-validation";
 import { validate } from "../validation/validation";
 import bcrypt from 'bcrypt';
 import { AuthorizationError } from "../error/authorization-error";
@@ -220,7 +220,48 @@ const deleteUser = async (userId, ip) => {
         userId: userId,
         ip: ip,
     });
-}
+};
+
+const changePassword = async (request, userId, ip) => {
+    request = validate(changePasswordValidation, request);
+    const user = await prismaClient.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            password: true,
+        },
+    });
+    const isPasswordValid = await bcrypt.compare(request.oldPassword, user.password);
+    if (!isPasswordValid) {
+        await logger({
+            apiEndpoint: "/auth/password",
+            message:"Failed to change password due to invalid old password",
+            tableName: "User",
+            action: "UPDATE",
+            userId: userId,
+            ip: ip,
+        });
+    }
+    const hashedPassword = await bcrypt.hash(request.newPassword, 10);
+    await prismaClient.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            password: hashedPassword,
+        },
+    });
+    await logger({
+        apiEndpoint: "/auth/password",
+        message:"Change password",
+        tableName: "User",
+        action: "UPDATE",
+        recordId: user.id,
+        userId: userId,
+        ip: ip,
+    });
+};
 
 export default {
     register,
@@ -229,4 +270,5 @@ export default {
     getUserInformation,
     editUserInformation,
     deleteUser,
+    changePassword,
 }
