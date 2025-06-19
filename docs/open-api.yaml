@@ -95,11 +95,9 @@ paths:
                   data:
                     type: object
                     properties:
-                      accessToken:
+                      message:
                         type: string
-                      refreshToken:
-                        type: string
-  /auth/logout:
+  /auth/session/logout:
     post:
       tags:
       - Authentication
@@ -240,7 +238,7 @@ paths:
                     properties:
                       message:
                         type: string
-  /auth/refresh:
+  /auth/session/refresh:
     post:
       tags:
         - Authentication
@@ -258,9 +256,7 @@ paths:
                   data:
                     type: object
                     properties:
-                      accessToken:
-                        type: string
-                      refreshToken:
+                      message:
                         type: string
   /data:
     post:
