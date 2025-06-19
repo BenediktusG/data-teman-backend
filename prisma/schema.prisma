@@ -36,18 +36,22 @@ model User {
   role UserRole @default(USER)
   registeredAt DateTime @default(now())
 
+  data Data[]
   logs Log[]
   token Token[]
 }
 
-model Contact {
+model Data {
   id String @id @default(uuid())
   name String 
   description String? @db.Text
   Address String
   birthDate DateTime @db.Date
   photoLink String?
+  ownerId String
   createdAt DateTime @default(now())
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Log {

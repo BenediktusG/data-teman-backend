@@ -129,13 +129,14 @@ exports.Prisma.UserScalarFieldEnum = {
   registeredAt: 'registeredAt'
 };
 
-exports.Prisma.ContactScalarFieldEnum = {
+exports.Prisma.DataScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
   Address: 'Address',
   birthDate: 'birthDate',
   photoLink: 'photoLink',
+  ownerId: 'ownerId',
   createdAt: 'createdAt'
 };
 
@@ -184,12 +185,13 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
-exports.Prisma.ContactOrderByRelevanceFieldEnum = {
+exports.Prisma.DataOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
   Address: 'Address',
-  photoLink: 'photoLink'
+  photoLink: 'photoLink',
+  ownerId: 'ownerId'
 };
 
 exports.Prisma.JsonNullValueFilter = {
@@ -234,7 +236,7 @@ exports.Action = exports.$Enums.Action = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Contact: 'Contact',
+  Data: 'Data',
   Log: 'Log',
   Token: 'Token'
 };

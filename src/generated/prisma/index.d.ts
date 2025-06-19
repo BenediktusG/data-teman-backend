@@ -19,10 +19,10 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Contact
+ * Model Data
  * 
  */
-export type Contact = $Result.DefaultSelection<Prisma.$ContactPayload>
+export type Data = $Result.DefaultSelection<Prisma.$DataPayload>
 /**
  * Model Log
  * 
@@ -203,14 +203,14 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.contact`: Exposes CRUD operations for the **Contact** model.
+   * `prisma.data`: Exposes CRUD operations for the **Data** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Contacts
-    * const contacts = await prisma.contact.findMany()
+    * // Fetch zero or more Data
+    * const data = await prisma.data.findMany()
     * ```
     */
-  get contact(): Prisma.ContactDelegate<ExtArgs, ClientOptions>;
+  get data(): Prisma.DataDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.log`: Exposes CRUD operations for the **Log** model.
@@ -672,7 +672,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Contact: 'Contact',
+    Data: 'Data',
     Log: 'Log',
     Token: 'Token'
   };
@@ -693,7 +693,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "contact" | "log" | "token"
+      modelProps: "user" | "data" | "log" | "token"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -763,69 +763,69 @@ export namespace Prisma {
           }
         }
       }
-      Contact: {
-        payload: Prisma.$ContactPayload<ExtArgs>
-        fields: Prisma.ContactFieldRefs
+      Data: {
+        payload: Prisma.$DataPayload<ExtArgs>
+        fields: Prisma.DataFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ContactFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload> | null
+            args: Prisma.DataFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ContactFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>
+            args: Prisma.DataFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>
           }
           findFirst: {
-            args: Prisma.ContactFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload> | null
+            args: Prisma.DataFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ContactFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>
+            args: Prisma.DataFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>
           }
           findMany: {
-            args: Prisma.ContactFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>[]
+            args: Prisma.DataFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>[]
           }
           create: {
-            args: Prisma.ContactCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>
+            args: Prisma.DataCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>
           }
           createMany: {
-            args: Prisma.ContactCreateManyArgs<ExtArgs>
+            args: Prisma.DataCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.ContactDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>
+            args: Prisma.DataDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>
           }
           update: {
-            args: Prisma.ContactUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>
+            args: Prisma.DataUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>
           }
           deleteMany: {
-            args: Prisma.ContactDeleteManyArgs<ExtArgs>
+            args: Prisma.DataDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ContactUpdateManyArgs<ExtArgs>
+            args: Prisma.DataUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.ContactUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ContactPayload>
+            args: Prisma.DataUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DataPayload>
           }
           aggregate: {
-            args: Prisma.ContactAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateContact>
+            args: Prisma.DataAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateData>
           }
           groupBy: {
-            args: Prisma.ContactGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ContactGroupByOutputType>[]
+            args: Prisma.DataGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DataGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ContactCountArgs<ExtArgs>
-            result: $Utils.Optional<ContactCountAggregateOutputType> | number
+            args: Prisma.DataCountArgs<ExtArgs>
+            result: $Utils.Optional<DataCountAggregateOutputType> | number
           }
         }
       }
@@ -1046,7 +1046,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    contact?: ContactOmit
+    data?: DataOmit
     log?: LogOmit
     token?: TokenOmit
   }
@@ -1143,11 +1143,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    data: number
     logs: number
     token: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    data?: boolean | UserCountOutputTypeCountDataArgs
     logs?: boolean | UserCountOutputTypeCountLogsArgs
     token?: boolean | UserCountOutputTypeCountTokenArgs
   }
@@ -1161,6 +1163,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DataWhereInput
   }
 
   /**
@@ -1354,6 +1363,7 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     registeredAt?: boolean
+    data?: boolean | User$dataArgs<ExtArgs>
     logs?: boolean | User$logsArgs<ExtArgs>
     token?: boolean | User$tokenArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1372,6 +1382,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "role" | "registeredAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    data?: boolean | User$dataArgs<ExtArgs>
     logs?: boolean | User$logsArgs<ExtArgs>
     token?: boolean | User$tokenArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1380,6 +1391,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      data: Prisma.$DataPayload<ExtArgs>[]
       logs: Prisma.$LogPayload<ExtArgs>[]
       token: Prisma.$TokenPayload<ExtArgs>[]
     }
@@ -1730,6 +1742,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    data<T extends User$dataArgs<ExtArgs> = {}>(args?: Subset<T, User$dataArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     logs<T extends User$logsArgs<ExtArgs> = {}>(args?: Subset<T, User$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     token<T extends User$tokenArgs<ExtArgs> = {}>(args?: Subset<T, User$tokenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2110,6 +2123,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.data
+   */
+  export type User$dataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Data
+     */
+    select?: DataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Data
+     */
+    omit?: DataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DataInclude<ExtArgs> | null
+    where?: DataWhereInput
+    orderBy?: DataOrderByWithRelationInput | DataOrderByWithRelationInput[]
+    cursor?: DataWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DataScalarFieldEnum | DataScalarFieldEnum[]
+  }
+
+  /**
    * User.logs
    */
   export type User$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2177,204 +2214,219 @@ export namespace Prisma {
 
 
   /**
-   * Model Contact
+   * Model Data
    */
 
-  export type AggregateContact = {
-    _count: ContactCountAggregateOutputType | null
-    _min: ContactMinAggregateOutputType | null
-    _max: ContactMaxAggregateOutputType | null
+  export type AggregateData = {
+    _count: DataCountAggregateOutputType | null
+    _min: DataMinAggregateOutputType | null
+    _max: DataMaxAggregateOutputType | null
   }
 
-  export type ContactMinAggregateOutputType = {
+  export type DataMinAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
     Address: string | null
     birthDate: Date | null
     photoLink: string | null
+    ownerId: string | null
     createdAt: Date | null
   }
 
-  export type ContactMaxAggregateOutputType = {
+  export type DataMaxAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
     Address: string | null
     birthDate: Date | null
     photoLink: string | null
+    ownerId: string | null
     createdAt: Date | null
   }
 
-  export type ContactCountAggregateOutputType = {
+  export type DataCountAggregateOutputType = {
     id: number
     name: number
     description: number
     Address: number
     birthDate: number
     photoLink: number
+    ownerId: number
     createdAt: number
     _all: number
   }
 
 
-  export type ContactMinAggregateInputType = {
+  export type DataMinAggregateInputType = {
     id?: true
     name?: true
     description?: true
     Address?: true
     birthDate?: true
     photoLink?: true
+    ownerId?: true
     createdAt?: true
   }
 
-  export type ContactMaxAggregateInputType = {
+  export type DataMaxAggregateInputType = {
     id?: true
     name?: true
     description?: true
     Address?: true
     birthDate?: true
     photoLink?: true
+    ownerId?: true
     createdAt?: true
   }
 
-  export type ContactCountAggregateInputType = {
+  export type DataCountAggregateInputType = {
     id?: true
     name?: true
     description?: true
     Address?: true
     birthDate?: true
     photoLink?: true
+    ownerId?: true
     createdAt?: true
     _all?: true
   }
 
-  export type ContactAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Contact to aggregate.
+     * Filter which Data to aggregate.
      */
-    where?: ContactWhereInput
+    where?: DataWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Contacts to fetch.
+     * Determine the order of Data to fetch.
      */
-    orderBy?: ContactOrderByWithRelationInput | ContactOrderByWithRelationInput[]
+    orderBy?: DataOrderByWithRelationInput | DataOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ContactWhereUniqueInput
+    cursor?: DataWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Contacts from the position of the cursor.
+     * Take `±n` Data from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Contacts.
+     * Skip the first `n` Data.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Contacts
+     * Count returned Data
     **/
-    _count?: true | ContactCountAggregateInputType
+    _count?: true | DataCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ContactMinAggregateInputType
+    _min?: DataMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ContactMaxAggregateInputType
+    _max?: DataMaxAggregateInputType
   }
 
-  export type GetContactAggregateType<T extends ContactAggregateArgs> = {
-        [P in keyof T & keyof AggregateContact]: P extends '_count' | 'count'
+  export type GetDataAggregateType<T extends DataAggregateArgs> = {
+        [P in keyof T & keyof AggregateData]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateContact[P]>
-      : GetScalarType<T[P], AggregateContact[P]>
+        : GetScalarType<T[P], AggregateData[P]>
+      : GetScalarType<T[P], AggregateData[P]>
   }
 
 
 
 
-  export type ContactGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ContactWhereInput
-    orderBy?: ContactOrderByWithAggregationInput | ContactOrderByWithAggregationInput[]
-    by: ContactScalarFieldEnum[] | ContactScalarFieldEnum
-    having?: ContactScalarWhereWithAggregatesInput
+  export type DataGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DataWhereInput
+    orderBy?: DataOrderByWithAggregationInput | DataOrderByWithAggregationInput[]
+    by: DataScalarFieldEnum[] | DataScalarFieldEnum
+    having?: DataScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ContactCountAggregateInputType | true
-    _min?: ContactMinAggregateInputType
-    _max?: ContactMaxAggregateInputType
+    _count?: DataCountAggregateInputType | true
+    _min?: DataMinAggregateInputType
+    _max?: DataMaxAggregateInputType
   }
 
-  export type ContactGroupByOutputType = {
+  export type DataGroupByOutputType = {
     id: string
     name: string
     description: string | null
     Address: string
     birthDate: Date
     photoLink: string | null
+    ownerId: string
     createdAt: Date
-    _count: ContactCountAggregateOutputType | null
-    _min: ContactMinAggregateOutputType | null
-    _max: ContactMaxAggregateOutputType | null
+    _count: DataCountAggregateOutputType | null
+    _min: DataMinAggregateOutputType | null
+    _max: DataMaxAggregateOutputType | null
   }
 
-  type GetContactGroupByPayload<T extends ContactGroupByArgs> = Prisma.PrismaPromise<
+  type GetDataGroupByPayload<T extends DataGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ContactGroupByOutputType, T['by']> &
+      PickEnumerable<DataGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ContactGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof DataGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ContactGroupByOutputType[P]>
-            : GetScalarType<T[P], ContactGroupByOutputType[P]>
+              : GetScalarType<T[P], DataGroupByOutputType[P]>
+            : GetScalarType<T[P], DataGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ContactSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DataSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     description?: boolean
     Address?: boolean
     birthDate?: boolean
     photoLink?: boolean
+    ownerId?: boolean
     createdAt?: boolean
-  }, ExtArgs["result"]["contact"]>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["data"]>
 
 
 
-  export type ContactSelectScalar = {
+  export type DataSelectScalar = {
     id?: boolean
     name?: boolean
     description?: boolean
     Address?: boolean
     birthDate?: boolean
     photoLink?: boolean
+    ownerId?: boolean
     createdAt?: boolean
   }
 
-  export type ContactOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "Address" | "birthDate" | "photoLink" | "createdAt", ExtArgs["result"]["contact"]>
+  export type DataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "Address" | "birthDate" | "photoLink" | "ownerId" | "createdAt", ExtArgs["result"]["data"]>
+  export type DataInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
-  export type $ContactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Contact"
-    objects: {}
+  export type $DataPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Data"
+    objects: {
+      owner: Prisma.$UserPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
@@ -2382,144 +2434,145 @@ export namespace Prisma {
       Address: string
       birthDate: Date
       photoLink: string | null
+      ownerId: string
       createdAt: Date
-    }, ExtArgs["result"]["contact"]>
+    }, ExtArgs["result"]["data"]>
     composites: {}
   }
 
-  type ContactGetPayload<S extends boolean | null | undefined | ContactDefaultArgs> = $Result.GetResult<Prisma.$ContactPayload, S>
+  type DataGetPayload<S extends boolean | null | undefined | DataDefaultArgs> = $Result.GetResult<Prisma.$DataPayload, S>
 
-  type ContactCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ContactFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ContactCountAggregateInputType | true
+  type DataCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DataFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DataCountAggregateInputType | true
     }
 
-  export interface ContactDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Contact'], meta: { name: 'Contact' } }
+  export interface DataDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Data'], meta: { name: 'Data' } }
     /**
-     * Find zero or one Contact that matches the filter.
-     * @param {ContactFindUniqueArgs} args - Arguments to find a Contact
+     * Find zero or one Data that matches the filter.
+     * @param {DataFindUniqueArgs} args - Arguments to find a Data
      * @example
-     * // Get one Contact
-     * const contact = await prisma.contact.findUnique({
+     * // Get one Data
+     * const data = await prisma.data.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ContactFindUniqueArgs>(args: SelectSubset<T, ContactFindUniqueArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends DataFindUniqueArgs>(args: SelectSubset<T, DataFindUniqueArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Contact that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Data that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ContactFindUniqueOrThrowArgs} args - Arguments to find a Contact
+     * @param {DataFindUniqueOrThrowArgs} args - Arguments to find a Data
      * @example
-     * // Get one Contact
-     * const contact = await prisma.contact.findUniqueOrThrow({
+     * // Get one Data
+     * const data = await prisma.data.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ContactFindUniqueOrThrowArgs>(args: SelectSubset<T, ContactFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends DataFindUniqueOrThrowArgs>(args: SelectSubset<T, DataFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Contact that matches the filter.
+     * Find the first Data that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactFindFirstArgs} args - Arguments to find a Contact
+     * @param {DataFindFirstArgs} args - Arguments to find a Data
      * @example
-     * // Get one Contact
-     * const contact = await prisma.contact.findFirst({
+     * // Get one Data
+     * const data = await prisma.data.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ContactFindFirstArgs>(args?: SelectSubset<T, ContactFindFirstArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends DataFindFirstArgs>(args?: SelectSubset<T, DataFindFirstArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Contact that matches the filter or
+     * Find the first Data that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactFindFirstOrThrowArgs} args - Arguments to find a Contact
+     * @param {DataFindFirstOrThrowArgs} args - Arguments to find a Data
      * @example
-     * // Get one Contact
-     * const contact = await prisma.contact.findFirstOrThrow({
+     * // Get one Data
+     * const data = await prisma.data.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ContactFindFirstOrThrowArgs>(args?: SelectSubset<T, ContactFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends DataFindFirstOrThrowArgs>(args?: SelectSubset<T, DataFindFirstOrThrowArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Contacts that matches the filter.
+     * Find zero or more Data that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {DataFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Contacts
-     * const contacts = await prisma.contact.findMany()
+     * // Get all Data
+     * const data = await prisma.data.findMany()
      * 
-     * // Get first 10 Contacts
-     * const contacts = await prisma.contact.findMany({ take: 10 })
+     * // Get first 10 Data
+     * const data = await prisma.data.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const contactWithIdOnly = await prisma.contact.findMany({ select: { id: true } })
+     * const dataWithIdOnly = await prisma.data.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends ContactFindManyArgs>(args?: SelectSubset<T, ContactFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends DataFindManyArgs>(args?: SelectSubset<T, DataFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Contact.
-     * @param {ContactCreateArgs} args - Arguments to create a Contact.
+     * Create a Data.
+     * @param {DataCreateArgs} args - Arguments to create a Data.
      * @example
-     * // Create one Contact
-     * const Contact = await prisma.contact.create({
+     * // Create one Data
+     * const Data = await prisma.data.create({
      *   data: {
-     *     // ... data to create a Contact
+     *     // ... data to create a Data
      *   }
      * })
      * 
      */
-    create<T extends ContactCreateArgs>(args: SelectSubset<T, ContactCreateArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends DataCreateArgs>(args: SelectSubset<T, DataCreateArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Contacts.
-     * @param {ContactCreateManyArgs} args - Arguments to create many Contacts.
+     * Create many Data.
+     * @param {DataCreateManyArgs} args - Arguments to create many Data.
      * @example
-     * // Create many Contacts
-     * const contact = await prisma.contact.createMany({
+     * // Create many Data
+     * const data = await prisma.data.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ContactCreateManyArgs>(args?: SelectSubset<T, ContactCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends DataCreateManyArgs>(args?: SelectSubset<T, DataCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Contact.
-     * @param {ContactDeleteArgs} args - Arguments to delete one Contact.
+     * Delete a Data.
+     * @param {DataDeleteArgs} args - Arguments to delete one Data.
      * @example
-     * // Delete one Contact
-     * const Contact = await prisma.contact.delete({
+     * // Delete one Data
+     * const Data = await prisma.data.delete({
      *   where: {
-     *     // ... filter to delete one Contact
+     *     // ... filter to delete one Data
      *   }
      * })
      * 
      */
-    delete<T extends ContactDeleteArgs>(args: SelectSubset<T, ContactDeleteArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends DataDeleteArgs>(args: SelectSubset<T, DataDeleteArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Contact.
-     * @param {ContactUpdateArgs} args - Arguments to update one Contact.
+     * Update one Data.
+     * @param {DataUpdateArgs} args - Arguments to update one Data.
      * @example
-     * // Update one Contact
-     * const contact = await prisma.contact.update({
+     * // Update one Data
+     * const data = await prisma.data.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2529,30 +2582,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ContactUpdateArgs>(args: SelectSubset<T, ContactUpdateArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends DataUpdateArgs>(args: SelectSubset<T, DataUpdateArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Contacts.
-     * @param {ContactDeleteManyArgs} args - Arguments to filter Contacts to delete.
+     * Delete zero or more Data.
+     * @param {DataDeleteManyArgs} args - Arguments to filter Data to delete.
      * @example
-     * // Delete a few Contacts
-     * const { count } = await prisma.contact.deleteMany({
+     * // Delete a few Data
+     * const { count } = await prisma.data.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ContactDeleteManyArgs>(args?: SelectSubset<T, ContactDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends DataDeleteManyArgs>(args?: SelectSubset<T, DataDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Contacts.
+     * Update zero or more Data.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {DataUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Contacts
-     * const contact = await prisma.contact.updateMany({
+     * // Update many Data
+     * const data = await prisma.data.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2562,56 +2615,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ContactUpdateManyArgs>(args: SelectSubset<T, ContactUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends DataUpdateManyArgs>(args: SelectSubset<T, DataUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Contact.
-     * @param {ContactUpsertArgs} args - Arguments to update or create a Contact.
+     * Create or update one Data.
+     * @param {DataUpsertArgs} args - Arguments to update or create a Data.
      * @example
-     * // Update or create a Contact
-     * const contact = await prisma.contact.upsert({
+     * // Update or create a Data
+     * const data = await prisma.data.upsert({
      *   create: {
-     *     // ... data to create a Contact
+     *     // ... data to create a Data
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Contact we want to update
+     *     // ... the filter for the Data we want to update
      *   }
      * })
      */
-    upsert<T extends ContactUpsertArgs>(args: SelectSubset<T, ContactUpsertArgs<ExtArgs>>): Prisma__ContactClient<$Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends DataUpsertArgs>(args: SelectSubset<T, DataUpsertArgs<ExtArgs>>): Prisma__DataClient<$Result.GetResult<Prisma.$DataPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Contacts.
+     * Count the number of Data.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactCountArgs} args - Arguments to filter Contacts to count.
+     * @param {DataCountArgs} args - Arguments to filter Data to count.
      * @example
-     * // Count the number of Contacts
-     * const count = await prisma.contact.count({
+     * // Count the number of Data
+     * const count = await prisma.data.count({
      *   where: {
-     *     // ... the filter for the Contacts we want to count
+     *     // ... the filter for the Data we want to count
      *   }
      * })
     **/
-    count<T extends ContactCountArgs>(
-      args?: Subset<T, ContactCountArgs>,
+    count<T extends DataCountArgs>(
+      args?: Subset<T, DataCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ContactCountAggregateOutputType>
+          : GetScalarType<T['select'], DataCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Contact.
+     * Allows you to perform aggregations operations on a Data.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {DataAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -2631,13 +2684,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ContactAggregateArgs>(args: Subset<T, ContactAggregateArgs>): Prisma.PrismaPromise<GetContactAggregateType<T>>
+    aggregate<T extends DataAggregateArgs>(args: Subset<T, DataAggregateArgs>): Prisma.PrismaPromise<GetDataAggregateType<T>>
 
     /**
-     * Group by Contact.
+     * Group by Data.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ContactGroupByArgs} args - Group by arguments.
+     * @param {DataGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -2652,14 +2705,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ContactGroupByArgs,
+      T extends DataGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ContactGroupByArgs['orderBy'] }
-        : { orderBy?: ContactGroupByArgs['orderBy'] },
+        ? { orderBy: DataGroupByArgs['orderBy'] }
+        : { orderBy?: DataGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2708,21 +2761,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ContactGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContactGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, DataGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDataGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Contact model
+   * Fields of the Data model
    */
-  readonly fields: ContactFieldRefs;
+  readonly fields: DataFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Contact.
+   * The delegate class that acts as a "Promise-like" for Data.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ContactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__DataClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2749,334 +2803,375 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Contact model
+   * Fields of the Data model
    */
-  interface ContactFieldRefs {
-    readonly id: FieldRef<"Contact", 'String'>
-    readonly name: FieldRef<"Contact", 'String'>
-    readonly description: FieldRef<"Contact", 'String'>
-    readonly Address: FieldRef<"Contact", 'String'>
-    readonly birthDate: FieldRef<"Contact", 'DateTime'>
-    readonly photoLink: FieldRef<"Contact", 'String'>
-    readonly createdAt: FieldRef<"Contact", 'DateTime'>
+  interface DataFieldRefs {
+    readonly id: FieldRef<"Data", 'String'>
+    readonly name: FieldRef<"Data", 'String'>
+    readonly description: FieldRef<"Data", 'String'>
+    readonly Address: FieldRef<"Data", 'String'>
+    readonly birthDate: FieldRef<"Data", 'DateTime'>
+    readonly photoLink: FieldRef<"Data", 'String'>
+    readonly ownerId: FieldRef<"Data", 'String'>
+    readonly createdAt: FieldRef<"Data", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Contact findUnique
+   * Data findUnique
    */
-  export type ContactFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * Filter, which Contact to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: ContactWhereUniqueInput
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * Filter, which Data to fetch.
+     */
+    where: DataWhereUniqueInput
   }
 
   /**
-   * Contact findUniqueOrThrow
+   * Data findUniqueOrThrow
    */
-  export type ContactFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * Filter, which Contact to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: ContactWhereUniqueInput
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * Filter, which Data to fetch.
+     */
+    where: DataWhereUniqueInput
   }
 
   /**
-   * Contact findFirst
+   * Data findFirst
    */
-  export type ContactFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * Filter, which Contact to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ContactWhereInput
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * Filter, which Data to fetch.
+     */
+    where?: DataWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Contacts to fetch.
+     * Determine the order of Data to fetch.
      */
-    orderBy?: ContactOrderByWithRelationInput | ContactOrderByWithRelationInput[]
+    orderBy?: DataOrderByWithRelationInput | DataOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Contacts.
+     * Sets the position for searching for Data.
      */
-    cursor?: ContactWhereUniqueInput
+    cursor?: DataWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Contacts from the position of the cursor.
+     * Take `±n` Data from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Contacts.
+     * Skip the first `n` Data.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Contacts.
+     * Filter by unique combinations of Data.
      */
-    distinct?: ContactScalarFieldEnum | ContactScalarFieldEnum[]
+    distinct?: DataScalarFieldEnum | DataScalarFieldEnum[]
   }
 
   /**
-   * Contact findFirstOrThrow
+   * Data findFirstOrThrow
    */
-  export type ContactFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * Filter, which Contact to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ContactWhereInput
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * Filter, which Data to fetch.
+     */
+    where?: DataWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Contacts to fetch.
+     * Determine the order of Data to fetch.
      */
-    orderBy?: ContactOrderByWithRelationInput | ContactOrderByWithRelationInput[]
+    orderBy?: DataOrderByWithRelationInput | DataOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Contacts.
+     * Sets the position for searching for Data.
      */
-    cursor?: ContactWhereUniqueInput
+    cursor?: DataWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Contacts from the position of the cursor.
+     * Take `±n` Data from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Contacts.
+     * Skip the first `n` Data.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Contacts.
+     * Filter by unique combinations of Data.
      */
-    distinct?: ContactScalarFieldEnum | ContactScalarFieldEnum[]
+    distinct?: DataScalarFieldEnum | DataScalarFieldEnum[]
   }
 
   /**
-   * Contact findMany
+   * Data findMany
    */
-  export type ContactFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * Filter, which Contacts to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ContactWhereInput
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * Filter, which Data to fetch.
+     */
+    where?: DataWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Contacts to fetch.
+     * Determine the order of Data to fetch.
      */
-    orderBy?: ContactOrderByWithRelationInput | ContactOrderByWithRelationInput[]
+    orderBy?: DataOrderByWithRelationInput | DataOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Contacts.
+     * Sets the position for listing Data.
      */
-    cursor?: ContactWhereUniqueInput
+    cursor?: DataWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Contacts from the position of the cursor.
+     * Take `±n` Data from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Contacts.
+     * Skip the first `n` Data.
      */
     skip?: number
-    distinct?: ContactScalarFieldEnum | ContactScalarFieldEnum[]
+    distinct?: DataScalarFieldEnum | DataScalarFieldEnum[]
   }
 
   /**
-   * Contact create
+   * Data create
    */
-  export type ContactCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * The data needed to create a Contact.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<ContactCreateInput, ContactUncheckedCreateInput>
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Data.
+     */
+    data: XOR<DataCreateInput, DataUncheckedCreateInput>
   }
 
   /**
-   * Contact createMany
+   * Data createMany
    */
-  export type ContactCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Contacts.
+     * The data used to create many Data.
      */
-    data: ContactCreateManyInput | ContactCreateManyInput[]
+    data: DataCreateManyInput | DataCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Contact update
+   * Data update
    */
-  export type ContactUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * The data needed to update a Contact.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<ContactUpdateInput, ContactUncheckedUpdateInput>
+    include?: DataInclude<ExtArgs> | null
     /**
-     * Choose, which Contact to update.
+     * The data needed to update a Data.
      */
-    where: ContactWhereUniqueInput
+    data: XOR<DataUpdateInput, DataUncheckedUpdateInput>
+    /**
+     * Choose, which Data to update.
+     */
+    where: DataWhereUniqueInput
   }
 
   /**
-   * Contact updateMany
+   * Data updateMany
    */
-  export type ContactUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Contacts.
+     * The data used to update Data.
      */
-    data: XOR<ContactUpdateManyMutationInput, ContactUncheckedUpdateManyInput>
+    data: XOR<DataUpdateManyMutationInput, DataUncheckedUpdateManyInput>
     /**
-     * Filter which Contacts to update
+     * Filter which Data to update
      */
-    where?: ContactWhereInput
+    where?: DataWhereInput
     /**
-     * Limit how many Contacts to update.
+     * Limit how many Data to update.
      */
     limit?: number
   }
 
   /**
-   * Contact upsert
+   * Data upsert
    */
-  export type ContactUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * The filter to search for the Contact to update in case it exists.
+     * Choose, which related nodes to fetch as well
      */
-    where: ContactWhereUniqueInput
+    include?: DataInclude<ExtArgs> | null
     /**
-     * In case the Contact found by the `where` argument doesn't exist, create a new Contact with this data.
+     * The filter to search for the Data to update in case it exists.
      */
-    create: XOR<ContactCreateInput, ContactUncheckedCreateInput>
+    where: DataWhereUniqueInput
     /**
-     * In case the Contact was found with the provided `where` argument, update it with this data.
+     * In case the Data found by the `where` argument doesn't exist, create a new Data with this data.
      */
-    update: XOR<ContactUpdateInput, ContactUncheckedUpdateInput>
+    create: XOR<DataCreateInput, DataUncheckedCreateInput>
+    /**
+     * In case the Data was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DataUpdateInput, DataUncheckedUpdateInput>
   }
 
   /**
-   * Contact delete
+   * Data delete
    */
-  export type ContactDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
     /**
-     * Filter which Contact to delete.
+     * Choose, which related nodes to fetch as well
      */
-    where: ContactWhereUniqueInput
+    include?: DataInclude<ExtArgs> | null
+    /**
+     * Filter which Data to delete.
+     */
+    where: DataWhereUniqueInput
   }
 
   /**
-   * Contact deleteMany
+   * Data deleteMany
    */
-  export type ContactDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Contacts to delete
+     * Filter which Data to delete
      */
-    where?: ContactWhereInput
+    where?: DataWhereInput
     /**
-     * Limit how many Contacts to delete.
+     * Limit how many Data to delete.
      */
     limit?: number
   }
 
   /**
-   * Contact without action
+   * Data without action
    */
-  export type ContactDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DataDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Contact
+     * Select specific fields to fetch from the Data
      */
-    select?: ContactSelect<ExtArgs> | null
+    select?: DataSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Contact
+     * Omit specific fields from the Data
      */
-    omit?: ContactOmit<ExtArgs> | null
+    omit?: DataOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DataInclude<ExtArgs> | null
   }
 
 
@@ -5056,17 +5151,18 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const ContactScalarFieldEnum: {
+  export const DataScalarFieldEnum: {
     id: 'id',
     name: 'name',
     description: 'description',
     Address: 'Address',
     birthDate: 'birthDate',
     photoLink: 'photoLink',
+    ownerId: 'ownerId',
     createdAt: 'createdAt'
   };
 
-  export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]
+  export type DataScalarFieldEnum = (typeof DataScalarFieldEnum)[keyof typeof DataScalarFieldEnum]
 
 
   export const LogScalarFieldEnum: {
@@ -5132,15 +5228,16 @@ export namespace Prisma {
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
-  export const ContactOrderByRelevanceFieldEnum: {
+  export const DataOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
     description: 'description',
     Address: 'Address',
-    photoLink: 'photoLink'
+    photoLink: 'photoLink',
+    ownerId: 'ownerId'
   };
 
-  export type ContactOrderByRelevanceFieldEnum = (typeof ContactOrderByRelevanceFieldEnum)[keyof typeof ContactOrderByRelevanceFieldEnum]
+  export type DataOrderByRelevanceFieldEnum = (typeof DataOrderByRelevanceFieldEnum)[keyof typeof DataOrderByRelevanceFieldEnum]
 
 
   export const JsonNullValueFilter: {
@@ -5256,6 +5353,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     registeredAt?: DateTimeFilter<"User"> | Date | string
+    data?: DataListRelationFilter
     logs?: LogListRelationFilter
     token?: TokenListRelationFilter
   }
@@ -5267,6 +5365,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     registeredAt?: SortOrder
+    data?: DataOrderByRelationAggregateInput
     logs?: LogOrderByRelationAggregateInput
     token?: TokenOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
@@ -5282,6 +5381,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     registeredAt?: DateTimeFilter<"User"> | Date | string
+    data?: DataListRelationFilter
     logs?: LogListRelationFilter
     token?: TokenListRelationFilter
   }, "id" | "email">
@@ -5310,67 +5410,75 @@ export namespace Prisma {
     registeredAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
-  export type ContactWhereInput = {
-    AND?: ContactWhereInput | ContactWhereInput[]
-    OR?: ContactWhereInput[]
-    NOT?: ContactWhereInput | ContactWhereInput[]
-    id?: StringFilter<"Contact"> | string
-    name?: StringFilter<"Contact"> | string
-    description?: StringNullableFilter<"Contact"> | string | null
-    Address?: StringFilter<"Contact"> | string
-    birthDate?: DateTimeFilter<"Contact"> | Date | string
-    photoLink?: StringNullableFilter<"Contact"> | string | null
-    createdAt?: DateTimeFilter<"Contact"> | Date | string
+  export type DataWhereInput = {
+    AND?: DataWhereInput | DataWhereInput[]
+    OR?: DataWhereInput[]
+    NOT?: DataWhereInput | DataWhereInput[]
+    id?: StringFilter<"Data"> | string
+    name?: StringFilter<"Data"> | string
+    description?: StringNullableFilter<"Data"> | string | null
+    Address?: StringFilter<"Data"> | string
+    birthDate?: DateTimeFilter<"Data"> | Date | string
+    photoLink?: StringNullableFilter<"Data"> | string | null
+    ownerId?: StringFilter<"Data"> | string
+    createdAt?: DateTimeFilter<"Data"> | Date | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type ContactOrderByWithRelationInput = {
+  export type DataOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     Address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrderInput | SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
-    _relevance?: ContactOrderByRelevanceInput
+    owner?: UserOrderByWithRelationInput
+    _relevance?: DataOrderByRelevanceInput
   }
 
-  export type ContactWhereUniqueInput = Prisma.AtLeast<{
+  export type DataWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: ContactWhereInput | ContactWhereInput[]
-    OR?: ContactWhereInput[]
-    NOT?: ContactWhereInput | ContactWhereInput[]
-    name?: StringFilter<"Contact"> | string
-    description?: StringNullableFilter<"Contact"> | string | null
-    Address?: StringFilter<"Contact"> | string
-    birthDate?: DateTimeFilter<"Contact"> | Date | string
-    photoLink?: StringNullableFilter<"Contact"> | string | null
-    createdAt?: DateTimeFilter<"Contact"> | Date | string
+    AND?: DataWhereInput | DataWhereInput[]
+    OR?: DataWhereInput[]
+    NOT?: DataWhereInput | DataWhereInput[]
+    name?: StringFilter<"Data"> | string
+    description?: StringNullableFilter<"Data"> | string | null
+    Address?: StringFilter<"Data"> | string
+    birthDate?: DateTimeFilter<"Data"> | Date | string
+    photoLink?: StringNullableFilter<"Data"> | string | null
+    ownerId?: StringFilter<"Data"> | string
+    createdAt?: DateTimeFilter<"Data"> | Date | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
-  export type ContactOrderByWithAggregationInput = {
+  export type DataOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     Address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrderInput | SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
-    _count?: ContactCountOrderByAggregateInput
-    _max?: ContactMaxOrderByAggregateInput
-    _min?: ContactMinOrderByAggregateInput
+    _count?: DataCountOrderByAggregateInput
+    _max?: DataMaxOrderByAggregateInput
+    _min?: DataMinOrderByAggregateInput
   }
 
-  export type ContactScalarWhereWithAggregatesInput = {
-    AND?: ContactScalarWhereWithAggregatesInput | ContactScalarWhereWithAggregatesInput[]
-    OR?: ContactScalarWhereWithAggregatesInput[]
-    NOT?: ContactScalarWhereWithAggregatesInput | ContactScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Contact"> | string
-    name?: StringWithAggregatesFilter<"Contact"> | string
-    description?: StringNullableWithAggregatesFilter<"Contact"> | string | null
-    Address?: StringWithAggregatesFilter<"Contact"> | string
-    birthDate?: DateTimeWithAggregatesFilter<"Contact"> | Date | string
-    photoLink?: StringNullableWithAggregatesFilter<"Contact"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"Contact"> | Date | string
+  export type DataScalarWhereWithAggregatesInput = {
+    AND?: DataScalarWhereWithAggregatesInput | DataScalarWhereWithAggregatesInput[]
+    OR?: DataScalarWhereWithAggregatesInput[]
+    NOT?: DataScalarWhereWithAggregatesInput | DataScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Data"> | string
+    name?: StringWithAggregatesFilter<"Data"> | string
+    description?: StringNullableWithAggregatesFilter<"Data"> | string | null
+    Address?: StringWithAggregatesFilter<"Data"> | string
+    birthDate?: DateTimeWithAggregatesFilter<"Data"> | Date | string
+    photoLink?: StringNullableWithAggregatesFilter<"Data"> | string | null
+    ownerId?: StringWithAggregatesFilter<"Data"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Data"> | Date | string
   }
 
   export type LogWhereInput = {
@@ -5527,6 +5635,7 @@ export namespace Prisma {
     password: string
     role?: $Enums.UserRole
     registeredAt?: Date | string
+    data?: DataCreateNestedManyWithoutOwnerInput
     logs?: LogCreateNestedManyWithoutUserInput
     token?: TokenCreateNestedManyWithoutUserInput
   }
@@ -5538,6 +5647,7 @@ export namespace Prisma {
     password: string
     role?: $Enums.UserRole
     registeredAt?: Date | string
+    data?: DataUncheckedCreateNestedManyWithoutOwnerInput
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
     token?: TokenUncheckedCreateNestedManyWithoutUserInput
   }
@@ -5549,6 +5659,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: DataUpdateManyWithoutOwnerNestedInput
     logs?: LogUpdateManyWithoutUserNestedInput
     token?: TokenUpdateManyWithoutUserNestedInput
   }
@@ -5560,6 +5671,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: DataUncheckedUpdateManyWithoutOwnerNestedInput
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
     token?: TokenUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -5591,7 +5703,7 @@ export namespace Prisma {
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ContactCreateInput = {
+  export type DataCreateInput = {
     id?: string
     name: string
     description?: string | null
@@ -5599,19 +5711,54 @@ export namespace Prisma {
     birthDate: Date | string
     photoLink?: string | null
     createdAt?: Date | string
+    owner: UserCreateNestedOneWithoutDataInput
   }
 
-  export type ContactUncheckedCreateInput = {
+  export type DataUncheckedCreateInput = {
     id?: string
     name: string
     description?: string | null
     Address: string
     birthDate: Date | string
     photoLink?: string | null
+    ownerId: string
     createdAt?: Date | string
   }
 
-  export type ContactUpdateInput = {
+  export type DataUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    Address?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutDataNestedInput
+  }
+
+  export type DataUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    Address?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DataCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    Address: string
+    birthDate: Date | string
+    photoLink?: string | null
+    ownerId: string
+    createdAt?: Date | string
+  }
+
+  export type DataUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5621,43 +5768,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ContactUncheckedUpdateInput = {
+  export type DataUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     Address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ContactCreateManyInput = {
-    id?: string
-    name: string
-    description?: string | null
-    Address: string
-    birthDate: Date | string
-    photoLink?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ContactUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ContactUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -5853,6 +5971,12 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type DataListRelationFilter = {
+    every?: DataWhereInput
+    some?: DataWhereInput
+    none?: DataWhereInput
+  }
+
   export type LogListRelationFilter = {
     every?: LogWhereInput
     some?: LogWhereInput
@@ -5863,6 +5987,10 @@ export namespace Prisma {
     every?: TokenWhereInput
     some?: TokenWhereInput
     none?: TokenWhereInput
+  }
+
+  export type DataOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type LogOrderByRelationAggregateInput = {
@@ -5963,44 +6091,52 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type ContactOrderByRelevanceInput = {
-    fields: ContactOrderByRelevanceFieldEnum | ContactOrderByRelevanceFieldEnum[]
+  export type DataOrderByRelevanceInput = {
+    fields: DataOrderByRelevanceFieldEnum | DataOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type ContactCountOrderByAggregateInput = {
+  export type DataCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
     Address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type ContactMaxOrderByAggregateInput = {
+  export type DataMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
     Address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type ContactMinOrderByAggregateInput = {
+  export type DataMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
     Address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -6152,11 +6288,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type TokenOrderByRelevanceInput = {
     fields: TokenOrderByRelevanceFieldEnum | TokenOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -6215,6 +6346,13 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type DataCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<DataCreateWithoutOwnerInput, DataUncheckedCreateWithoutOwnerInput> | DataCreateWithoutOwnerInput[] | DataUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: DataCreateOrConnectWithoutOwnerInput | DataCreateOrConnectWithoutOwnerInput[]
+    createMany?: DataCreateManyOwnerInputEnvelope
+    connect?: DataWhereUniqueInput | DataWhereUniqueInput[]
+  }
+
   export type LogCreateNestedManyWithoutUserInput = {
     create?: XOR<LogCreateWithoutUserInput, LogUncheckedCreateWithoutUserInput> | LogCreateWithoutUserInput[] | LogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogCreateOrConnectWithoutUserInput | LogCreateOrConnectWithoutUserInput[]
@@ -6227,6 +6365,13 @@ export namespace Prisma {
     connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
     createMany?: TokenCreateManyUserInputEnvelope
     connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+  }
+
+  export type DataUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<DataCreateWithoutOwnerInput, DataUncheckedCreateWithoutOwnerInput> | DataCreateWithoutOwnerInput[] | DataUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: DataCreateOrConnectWithoutOwnerInput | DataCreateOrConnectWithoutOwnerInput[]
+    createMany?: DataCreateManyOwnerInputEnvelope
+    connect?: DataWhereUniqueInput | DataWhereUniqueInput[]
   }
 
   export type LogUncheckedCreateNestedManyWithoutUserInput = {
@@ -6253,6 +6398,20 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type DataUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<DataCreateWithoutOwnerInput, DataUncheckedCreateWithoutOwnerInput> | DataCreateWithoutOwnerInput[] | DataUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: DataCreateOrConnectWithoutOwnerInput | DataCreateOrConnectWithoutOwnerInput[]
+    upsert?: DataUpsertWithWhereUniqueWithoutOwnerInput | DataUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: DataCreateManyOwnerInputEnvelope
+    set?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    disconnect?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    delete?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    connect?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    update?: DataUpdateWithWhereUniqueWithoutOwnerInput | DataUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: DataUpdateManyWithWhereWithoutOwnerInput | DataUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: DataScalarWhereInput | DataScalarWhereInput[]
   }
 
   export type LogUpdateManyWithoutUserNestedInput = {
@@ -6283,6 +6442,20 @@ export namespace Prisma {
     deleteMany?: TokenScalarWhereInput | TokenScalarWhereInput[]
   }
 
+  export type DataUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<DataCreateWithoutOwnerInput, DataUncheckedCreateWithoutOwnerInput> | DataCreateWithoutOwnerInput[] | DataUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: DataCreateOrConnectWithoutOwnerInput | DataCreateOrConnectWithoutOwnerInput[]
+    upsert?: DataUpsertWithWhereUniqueWithoutOwnerInput | DataUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: DataCreateManyOwnerInputEnvelope
+    set?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    disconnect?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    delete?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    connect?: DataWhereUniqueInput | DataWhereUniqueInput[]
+    update?: DataUpdateWithWhereUniqueWithoutOwnerInput | DataUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: DataUpdateManyWithWhereWithoutOwnerInput | DataUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: DataScalarWhereInput | DataScalarWhereInput[]
+  }
+
   export type LogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<LogCreateWithoutUserInput, LogUncheckedCreateWithoutUserInput> | LogCreateWithoutUserInput[] | LogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogCreateOrConnectWithoutUserInput | LogCreateOrConnectWithoutUserInput[]
@@ -6311,8 +6484,22 @@ export namespace Prisma {
     deleteMany?: TokenScalarWhereInput | TokenScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutDataInput = {
+    create?: XOR<UserCreateWithoutDataInput, UserUncheckedCreateWithoutDataInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDataInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutDataNestedInput = {
+    create?: XOR<UserCreateWithoutDataInput, UserUncheckedCreateWithoutDataInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDataInput
+    upsert?: UserUpsertWithoutDataInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDataInput, UserUpdateWithoutDataInput>, UserUncheckedUpdateWithoutDataInput>
   }
 
   export type UserCreateNestedOneWithoutLogsInput = {
@@ -6565,6 +6752,36 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type DataCreateWithoutOwnerInput = {
+    id?: string
+    name: string
+    description?: string | null
+    Address: string
+    birthDate: Date | string
+    photoLink?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DataUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    name: string
+    description?: string | null
+    Address: string
+    birthDate: Date | string
+    photoLink?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DataCreateOrConnectWithoutOwnerInput = {
+    where: DataWhereUniqueInput
+    create: XOR<DataCreateWithoutOwnerInput, DataUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type DataCreateManyOwnerInputEnvelope = {
+    data: DataCreateManyOwnerInput | DataCreateManyOwnerInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LogCreateWithoutUserInput = {
     id?: string
     message?: string | null
@@ -6625,6 +6842,36 @@ export namespace Prisma {
   export type TokenCreateManyUserInputEnvelope = {
     data: TokenCreateManyUserInput | TokenCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type DataUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: DataWhereUniqueInput
+    update: XOR<DataUpdateWithoutOwnerInput, DataUncheckedUpdateWithoutOwnerInput>
+    create: XOR<DataCreateWithoutOwnerInput, DataUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type DataUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: DataWhereUniqueInput
+    data: XOR<DataUpdateWithoutOwnerInput, DataUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type DataUpdateManyWithWhereWithoutOwnerInput = {
+    where: DataScalarWhereInput
+    data: XOR<DataUpdateManyMutationInput, DataUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type DataScalarWhereInput = {
+    AND?: DataScalarWhereInput | DataScalarWhereInput[]
+    OR?: DataScalarWhereInput[]
+    NOT?: DataScalarWhereInput | DataScalarWhereInput[]
+    id?: StringFilter<"Data"> | string
+    name?: StringFilter<"Data"> | string
+    description?: StringNullableFilter<"Data"> | string | null
+    Address?: StringFilter<"Data"> | string
+    birthDate?: DateTimeFilter<"Data"> | Date | string
+    photoLink?: StringNullableFilter<"Data"> | string | null
+    ownerId?: StringFilter<"Data"> | string
+    createdAt?: DateTimeFilter<"Data"> | Date | string
   }
 
   export type LogUpsertWithWhereUniqueWithoutUserInput = {
@@ -6688,6 +6935,66 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Token"> | Date | string
   }
 
+  export type UserCreateWithoutDataInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    registeredAt?: Date | string
+    logs?: LogCreateNestedManyWithoutUserInput
+    token?: TokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDataInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    registeredAt?: Date | string
+    logs?: LogUncheckedCreateNestedManyWithoutUserInput
+    token?: TokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDataInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDataInput, UserUncheckedCreateWithoutDataInput>
+  }
+
+  export type UserUpsertWithoutDataInput = {
+    update: XOR<UserUpdateWithoutDataInput, UserUncheckedUpdateWithoutDataInput>
+    create: XOR<UserCreateWithoutDataInput, UserUncheckedCreateWithoutDataInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDataInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDataInput, UserUncheckedUpdateWithoutDataInput>
+  }
+
+  export type UserUpdateWithoutDataInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logs?: LogUpdateManyWithoutUserNestedInput
+    token?: TokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDataInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logs?: LogUncheckedUpdateManyWithoutUserNestedInput
+    token?: TokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutLogsInput = {
     id?: string
     fullName: string
@@ -6695,6 +7002,7 @@ export namespace Prisma {
     password: string
     role?: $Enums.UserRole
     registeredAt?: Date | string
+    data?: DataCreateNestedManyWithoutOwnerInput
     token?: TokenCreateNestedManyWithoutUserInput
   }
 
@@ -6705,6 +7013,7 @@ export namespace Prisma {
     password: string
     role?: $Enums.UserRole
     registeredAt?: Date | string
+    data?: DataUncheckedCreateNestedManyWithoutOwnerInput
     token?: TokenUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -6731,6 +7040,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: DataUpdateManyWithoutOwnerNestedInput
     token?: TokenUpdateManyWithoutUserNestedInput
   }
 
@@ -6741,6 +7051,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: DataUncheckedUpdateManyWithoutOwnerNestedInput
     token?: TokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -6751,6 +7062,7 @@ export namespace Prisma {
     password: string
     role?: $Enums.UserRole
     registeredAt?: Date | string
+    data?: DataCreateNestedManyWithoutOwnerInput
     logs?: LogCreateNestedManyWithoutUserInput
   }
 
@@ -6761,6 +7073,7 @@ export namespace Prisma {
     password: string
     role?: $Enums.UserRole
     registeredAt?: Date | string
+    data?: DataUncheckedCreateNestedManyWithoutOwnerInput
     logs?: LogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -6787,6 +7100,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: DataUpdateManyWithoutOwnerNestedInput
     logs?: LogUpdateManyWithoutUserNestedInput
   }
 
@@ -6797,7 +7111,18 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     registeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: DataUncheckedUpdateManyWithoutOwnerNestedInput
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type DataCreateManyOwnerInput = {
+    id?: string
+    name: string
+    description?: string | null
+    Address: string
+    birthDate: Date | string
+    photoLink?: string | null
+    createdAt?: Date | string
   }
 
   export type LogCreateManyUserInput = {
@@ -6819,6 +7144,36 @@ export namespace Prisma {
     expiresAt: Date | string
     usedAt?: Date | string | null
     createdAt?: Date | string
+  }
+
+  export type DataUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    Address?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DataUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    Address?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DataUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    Address?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LogUpdateWithoutUserInput = {
