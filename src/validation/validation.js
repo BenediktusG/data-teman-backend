@@ -1,4 +1,4 @@
-import { ClientError } from "../error/client-error";
+import { ClientError } from "../error/client-error.js";
 
 export const validate = (schema, request) => {
     const result = schema.validate(request, {

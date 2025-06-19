@@ -1,8 +1,8 @@
-import { prismaClient } from "../application/database";
-import { AuthorizationError } from "../error/authorization-error";
-import { NotFoundError } from "../error/not-found-error";
-import { createDataValidation, updateDataValidation } from "../validation/data-validation";
-import { validate } from "../validation/validation";
+import { prismaClient } from "../application/database.js";
+import { AuthorizationError } from "../error/authorization-error.js";
+import { NotFoundError } from "../error/not-found-error.js";
+import { createDataValidation, updateDataValidation } from "../validation/data-validation.js";
+import { validate } from "../validation/validation.js";
 
 const create = async (request, userId, ip) => {
     request = validate(createDataValidation, request);  

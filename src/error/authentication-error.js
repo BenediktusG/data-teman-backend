@@ -1,4 +1,4 @@
-import { ClientError } from "./client-error";
+import { ClientError } from "./client-error.js";
 
 export class AuthenticationError extends ClientError {
     constructor(message) {

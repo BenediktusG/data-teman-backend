@@ -1,6 +1,6 @@
-import { redis } from "../application/redis";
-import { AuthenticationError } from "../error/authentication-error";
-import { verifyToken } from "../utils/jwtUtils";
+import { redis } from "../application/redis.js";
+import { AuthenticationError } from "../error/authentication-error.js";
+import { verifyToken } from "../utils/jwtUtils.js";
 
 export const authMiddleware = async (req, res, next) => {
     const token = req.cookies.accessToken;

@@ -1,7 +1,8 @@
 import express from 'express';
-import { publicRouter } from '../route/public-api';
-import { errorMiddleware } from '../middleware/error-middleware';
+import { publicRouter } from '../route/public-api.js';
+import { errorMiddleware } from '../middleware/error-middleware.js';
 import cookieParser from 'cookie-parser';
+import { userRouter } from '../route/api.js';
 
 export const web = express();
 
@@ -13,9 +14,9 @@ web.use((req, res, next) => {
     next();
 });
 web.use(publicRouter);
-web.use(publicRouter);
+web.use(userRouter);
 web.use(errorMiddleware);
 
-web.listen(PORT, () => {
+web.listen(process.env.APP_PORT, () => {
     console.log('Application is running');
 });

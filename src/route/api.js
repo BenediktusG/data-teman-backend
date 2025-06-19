@@ -1,7 +1,8 @@
 import express from 'express';
-import userController from '../controller/user-controller';
-import dataController from '../controller/data-controller';
-import { authMiddleware } from '../middleware/auth-middleware';
+import userController from '../controller/user-controller.js';
+import dataController from '../controller/data-controller.js';
+import { authMiddleware } from '../middleware/auth-middleware.js';
+import logController from '../controller/log-controller.js';
 
 export const userRouter = express.Router();
 userRouter.use(authMiddleware);
@@ -18,3 +19,6 @@ userRouter.post('/data', dataController.register);
 userRouter.get('/data', dataController.get);
 userRouter.patch('/data/:dataId', dataController.update);
 userRouter.delete('/data/:dataId', dataController.deleteData);
+
+// Log API
+userRouter.get('/logs', logController.get);

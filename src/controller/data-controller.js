@@ -1,4 +1,4 @@
-import dataService from "../service/data-service"
+import dataService from "../service/data-service.js"
 
 const register = async (req, res, next) => {
     try {

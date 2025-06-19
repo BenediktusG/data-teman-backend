@@ -1,4 +1,4 @@
-import { ClientError } from "./client-error";
+import { ClientError } from "./client-error.js";
 
 export class ConflictError extends ClientError {
     constructor(message) {

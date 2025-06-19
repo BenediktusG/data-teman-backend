@@ -1,15 +1,14 @@
 import { v4 } from "uuid";
-import { prismaClient } from "../application/database";
-import { logger } from "../application/logging";
-import { AuthenticationError } from "../error/authentication-error";
-import { ConflictError } from "../error/conflict-error";
-import { generateToken } from "../utils/jwtUtils";
-import { changePasswordValidation, editUserInformationValidation, loginValidation, registerUserValidation } from "../validation/user-validation";
-import { validate } from "../validation/validation";
+import { prismaClient } from "../application/database.js";
+import { logger } from "../application/logging.js";
+import { AuthenticationError } from "../error/authentication-error.js";
+import { ConflictError } from "../error/conflict-error.js";
+import { generateToken } from "../utils/jwtUtils.js";
+import { changePasswordValidation, editUserInformationValidation, loginValidation, registerUserValidation } from "../validation/user-validation.js";
+import { validate } from "../validation/validation.js";
 import bcrypt from 'bcrypt';
-import { AuthorizationError } from "../error/authorization-error";
-import { redis } from "../application/redis";
-import { application } from "express";
+import { AuthorizationError } from "../error/authorization-error.js";
+import { redis } from "../application/redis.js";
 
 const register = async (request, ip) => {
     const user = validate(registerUserValidation, request);

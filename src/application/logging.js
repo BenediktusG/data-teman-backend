@@ -1,4 +1,4 @@
-import { prismaClient } from "./database";
+import { prismaClient } from "./database.js";
 
 export const logger = async (logData) => {
     await prismaClient.log.create({

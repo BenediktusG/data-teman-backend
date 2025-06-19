@@ -1,4 +1,4 @@
-import { ClientError } from "../error/client-error";
+import { ClientError } from "../error/client-error.js";
 
 export const errorMiddleware = async (err, req, res, next) => {
     if (!err) {
