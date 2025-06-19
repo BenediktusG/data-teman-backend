@@ -1,0 +1,10 @@
+import Joi from 'joi';
+
+export const registerUserValidation = Joi.object({
+    fullName: Joi.string.min(1).max(191).patern(/^[A-Za-zÀ-ÿ]+(?:[' -][A-Za-zÀ-ÿ]+)*$/).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&_]{8,128}$/).required(),
+    confirmationPassword: Joi.string().valid(Joi.ref('password')).required().messages({
+        'any.only':'Confirmation password does not match password',
+    }),
+});

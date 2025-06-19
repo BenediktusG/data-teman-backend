@@ -1,0 +1,5 @@
+import express from 'express';
+import userController from '../controller/user-controller';
+
+export const publicRouter = express.Router();
+publicRouter.post('/auth/register', userController.register);
