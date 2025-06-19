@@ -30,10 +30,25 @@ const update = async (req, res, next) => {
     } catch (e) {
         next(e);
     }
-}
+};
+
+const deleteData =  async (req, res, next) => {
+    try {
+        await dataService.deleteData(req.params.dataId, req.userId, req.ip);
+        res.status(200).json({
+            success: true,
+            data: {
+                message: 'delete data successful',
+            },
+        });
+    } catch (e) {
+        next(e);
+    }
+};
 
 export default {
     register,
     get,
     update,
+    deleteData,
 };

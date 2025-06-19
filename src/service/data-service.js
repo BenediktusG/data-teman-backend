@@ -1,4 +1,6 @@
 import { prismaClient } from "../application/database";
+import { AuthorizationError } from "../error/authorization-error";
+import { NotFoundError } from "../error/not-found-error";
 import { createDataValidation, updateDataValidation } from "../validation/data-validation";
 import { validate } from "../validation/validation";
 
@@ -44,6 +46,37 @@ const get = async (userId, ip) => {
 
 const update = async (request, dataId ,userId, ip) => {
     request = validate(updateDataValidation, request);
+    const data = await prismaClient.data.findUnique({
+        where: {
+            id: dataId,
+        },
+    });
+    if (!data) {
+        await logger({
+            apiEndpoint: "/data/:dataId",
+            message:"Failed to update data teman due to invalid data id",
+            tableName: "Data",
+            action: "UPDATE",
+            userId: userId,
+            recordId: dataId,
+            ip: ip,
+        });
+        throw new NotFoundError('Data ID is invalid');
+    }
+
+    if (data.ownerId !== userId) {
+        await logger({
+            apiEndpoint: "/data/:dataId",
+            message:"Failed to update data teman due to forbidden access",
+            tableName: "Data",
+            action: "UPDATE",
+            userId: userId,
+            recordId: dataId,
+            ip: ip,
+        });
+        throw new AuthorizationError('You are not authorized to do this action');
+    }
+
     const result = await prismaClient.data.update({
         where: {
             id: dataId,
@@ -63,8 +96,57 @@ const update = async (request, dataId ,userId, ip) => {
     return result;
 };
 
+const deleteData = async (dataId, userId, ip) => {
+    const data = await prismaClient.data.findUnique({
+        where: {
+            id: dataId,
+        },
+    });
+    if (!data) {
+        await logger({
+            apiEndpoint: "/data/:dataId",
+            message:"Failed to delete data teman due to invalid data id",
+            tableName: "Data",
+            action: "DELETE",
+            userId: userId,
+            recordId: dataId,
+            ip: ip,
+        });
+        throw new NotFoundError('Data ID is invalid');
+    }
+
+    if (data.ownerId !== userId) {
+        await logger({
+            apiEndpoint: "/data/:dataId",
+            message:"Failed to delete data teman due to forbidden access",
+            tableName: "Data",
+            action: "DELETE",
+            userId: userId,
+            recordId: dataId,
+            ip: ip,
+        });
+        throw new AuthorizationError('You are not authorized to do this action');
+    }
+
+    await prismaClient.data.delete({
+        where: {
+            id: dataId,
+        },
+    });
+    await logger({
+        apiEndpoint: "/data/:dataId",
+        message:"Success delete data teman",
+        tableName: "Data",
+        action: "DELETE",
+        userId: userId,
+        recordId: dataId,
+        ip: ip,
+    });
+};
+
 export default {
     create,
     get,
     update,
+    deleteData,
 };
