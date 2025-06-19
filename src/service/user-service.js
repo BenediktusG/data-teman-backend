@@ -23,6 +23,13 @@ const register = async (request, ip) => {
     });
 
     if (isUserExists) {
+        await logger({
+            apiEndpoint: "/auth/register",
+            message:"Failed to register new user because of email have already used",
+            tableName: "User",
+            action: "CREATE",
+            ip: ip,
+        });
         throw new ConflictError('Username already exists');
     }
 
@@ -38,6 +45,7 @@ const register = async (request, ip) => {
         },
     });
     await logger({
+        apiEndpoint: "/auth/register",
         message:"Register new user",
         tableName: "User",
         action: "CREATE",
@@ -57,10 +65,24 @@ const login = async (request, ip) => {
         }
     });
     if (!user) {
+        await logger({
+            apiEndpoint: "/auth/login",
+            message:"Failed to login because of invalid email",
+            tableName: "Token",
+            action: "CREATE",
+            ip: ip,
+        });
         throw new AuthenticationError("username and password didn't match");
     }
     const isPasswordValid = await bcrypt.compare(credential.password, user.password);
     if (!isPasswordValid) {
+        await logger({
+            apiEndpoint: "/auth/login",
+            message:"Failed to login because of invalid password",
+            tableName: "Token",
+            action: "CREATE",
+            ip: ip,
+        });
         throw new AuthenticationError("username and password didn't match");
     }
     
@@ -74,6 +96,7 @@ const login = async (request, ip) => {
     });
 
     await logger({
+        apiEndpoint: "/auth/login",
         message:"Login user",
         tableName: "token",
         action: "CREATE",
@@ -96,6 +119,13 @@ const logout = async (userId, refreshToken, accessToken ,ip) => {
         }
     });
     if (token.userId !== userId) {
+        await logger({
+            apiEndpoint: "/auth/session/logout",
+            message:"Failed to logout because accessToken and refreshToken didn't match",
+            tableName: "Token",
+            action: "UPDATE",
+            ip: ip,
+        });
         throw new AuthorizationError('You are not authorized to this action');
     }
     const result = await prismaClient.token.update({
@@ -105,8 +135,9 @@ const logout = async (userId, refreshToken, accessToken ,ip) => {
         },
     });
     await logger({
+        apiEndpoint: "/auth/session/logout",
         message:"User Logout",
-        tableName: "token",
+        tableName: "Token",
         action: "UPDATE",
         recordId: result.id,
         meta: result,
@@ -116,8 +147,35 @@ const logout = async (userId, refreshToken, accessToken ,ip) => {
     redis.set(`blacklistedAccessToken:${accessToken}`, "1", 'EX', process.env.REDIS_TTL);
 }
 
+const getUserInformation = async (userId, ip) => {
+    const result = await prismaClient.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            id: true,
+            fullName: true,
+            email: true,
+            role: true,
+            registeredAt: true,
+        },
+    });
+    await logger({
+        apiEndpoint: "/auth/me",
+        message:"Get detailed user information",
+        tableName: "User",
+        action: "READ",
+        recordId: result.id,
+        meta: result,
+        userId: userId,
+        ip: ip,
+    });
+    return result;
+}
+
 export default {
     register,
     login,
     logout,
+    getUserInformation,
 }

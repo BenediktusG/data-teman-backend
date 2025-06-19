@@ -58,6 +58,7 @@ model Log {
   recordId String?
   meta Json?
   userId String?
+  apiEndpoint String?
   ip String
   createdAt DateTime @default(now())
 

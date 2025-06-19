@@ -51,15 +51,16 @@ model Contact {
 }
 
 model Log {
-  id        String   @id @default(uuid())
-  message   String?
-  tableName String?
-  action    Action?
-  recordId  String?
-  meta      Json?
-  userId    String?
-  ip        String
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  message     String?
+  tableName   String?
+  action      Action?
+  recordId    String?
+  meta        Json?
+  userId      String?
+  apiEndpoint String?
+  ip          String
+  createdAt   DateTime @default(now())
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }

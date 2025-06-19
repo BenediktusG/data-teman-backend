@@ -147,6 +147,7 @@ exports.Prisma.LogScalarFieldEnum = {
   recordId: 'recordId',
   meta: 'meta',
   userId: 'userId',
+  apiEndpoint: 'apiEndpoint',
   ip: 'ip',
   createdAt: 'createdAt'
 };
@@ -208,6 +209,7 @@ exports.Prisma.LogOrderByRelevanceFieldEnum = {
   tableName: 'tableName',
   recordId: 'recordId',
   userId: 'userId',
+  apiEndpoint: 'apiEndpoint',
   ip: 'ip'
 };
 

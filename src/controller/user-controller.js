@@ -58,8 +58,17 @@ const logout = async (req, res, next) => {
     }
 }
 
+const getUserInformation = async (req, res, next) => {
+    const result = await userService.getUserInformation(req.userId, req.ip);
+    res.status(200).json({
+        success: true,
+        data: result,
+    });
+};
+
 export default {
     register,
     login,
     logout,
+    getUserInformation,
 };

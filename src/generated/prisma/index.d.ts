@@ -3097,6 +3097,7 @@ export namespace Prisma {
     action: $Enums.Action | null
     recordId: string | null
     userId: string | null
+    apiEndpoint: string | null
     ip: string | null
     createdAt: Date | null
   }
@@ -3108,6 +3109,7 @@ export namespace Prisma {
     action: $Enums.Action | null
     recordId: string | null
     userId: string | null
+    apiEndpoint: string | null
     ip: string | null
     createdAt: Date | null
   }
@@ -3120,6 +3122,7 @@ export namespace Prisma {
     recordId: number
     meta: number
     userId: number
+    apiEndpoint: number
     ip: number
     createdAt: number
     _all: number
@@ -3133,6 +3136,7 @@ export namespace Prisma {
     action?: true
     recordId?: true
     userId?: true
+    apiEndpoint?: true
     ip?: true
     createdAt?: true
   }
@@ -3144,6 +3148,7 @@ export namespace Prisma {
     action?: true
     recordId?: true
     userId?: true
+    apiEndpoint?: true
     ip?: true
     createdAt?: true
   }
@@ -3156,6 +3161,7 @@ export namespace Prisma {
     recordId?: true
     meta?: true
     userId?: true
+    apiEndpoint?: true
     ip?: true
     createdAt?: true
     _all?: true
@@ -3241,6 +3247,7 @@ export namespace Prisma {
     recordId: string | null
     meta: JsonValue | null
     userId: string | null
+    apiEndpoint: string | null
     ip: string
     createdAt: Date
     _count: LogCountAggregateOutputType | null
@@ -3270,6 +3277,7 @@ export namespace Prisma {
     recordId?: boolean
     meta?: boolean
     userId?: boolean
+    apiEndpoint?: boolean
     ip?: boolean
     createdAt?: boolean
     user?: boolean | Log$userArgs<ExtArgs>
@@ -3285,11 +3293,12 @@ export namespace Prisma {
     recordId?: boolean
     meta?: boolean
     userId?: boolean
+    apiEndpoint?: boolean
     ip?: boolean
     createdAt?: boolean
   }
 
-  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message" | "tableName" | "action" | "recordId" | "meta" | "userId" | "ip" | "createdAt", ExtArgs["result"]["log"]>
+  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message" | "tableName" | "action" | "recordId" | "meta" | "userId" | "apiEndpoint" | "ip" | "createdAt", ExtArgs["result"]["log"]>
   export type LogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Log$userArgs<ExtArgs>
   }
@@ -3307,6 +3316,7 @@ export namespace Prisma {
       recordId: string | null
       meta: Prisma.JsonValue | null
       userId: string | null
+      apiEndpoint: string | null
       ip: string
       createdAt: Date
     }, ExtArgs["result"]["log"]>
@@ -3686,6 +3696,7 @@ export namespace Prisma {
     readonly recordId: FieldRef<"Log", 'String'>
     readonly meta: FieldRef<"Log", 'Json'>
     readonly userId: FieldRef<"Log", 'String'>
+    readonly apiEndpoint: FieldRef<"Log", 'String'>
     readonly ip: FieldRef<"Log", 'String'>
     readonly createdAt: FieldRef<"Log", 'DateTime'>
   }
@@ -5066,6 +5077,7 @@ export namespace Prisma {
     recordId: 'recordId',
     meta: 'meta',
     userId: 'userId',
+    apiEndpoint: 'apiEndpoint',
     ip: 'ip',
     createdAt: 'createdAt'
   };
@@ -5154,6 +5166,7 @@ export namespace Prisma {
     tableName: 'tableName',
     recordId: 'recordId',
     userId: 'userId',
+    apiEndpoint: 'apiEndpoint',
     ip: 'ip'
   };
 
@@ -5371,6 +5384,7 @@ export namespace Prisma {
     recordId?: StringNullableFilter<"Log"> | string | null
     meta?: JsonNullableFilter<"Log">
     userId?: StringNullableFilter<"Log"> | string | null
+    apiEndpoint?: StringNullableFilter<"Log"> | string | null
     ip?: StringFilter<"Log"> | string
     createdAt?: DateTimeFilter<"Log"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -5384,6 +5398,7 @@ export namespace Prisma {
     recordId?: SortOrderInput | SortOrder
     meta?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
+    apiEndpoint?: SortOrderInput | SortOrder
     ip?: SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -5401,6 +5416,7 @@ export namespace Prisma {
     recordId?: StringNullableFilter<"Log"> | string | null
     meta?: JsonNullableFilter<"Log">
     userId?: StringNullableFilter<"Log"> | string | null
+    apiEndpoint?: StringNullableFilter<"Log"> | string | null
     ip?: StringFilter<"Log"> | string
     createdAt?: DateTimeFilter<"Log"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -5414,6 +5430,7 @@ export namespace Prisma {
     recordId?: SortOrderInput | SortOrder
     meta?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
+    apiEndpoint?: SortOrderInput | SortOrder
     ip?: SortOrder
     createdAt?: SortOrder
     _count?: LogCountOrderByAggregateInput
@@ -5432,6 +5449,7 @@ export namespace Prisma {
     recordId?: StringNullableWithAggregatesFilter<"Log"> | string | null
     meta?: JsonNullableWithAggregatesFilter<"Log">
     userId?: StringNullableWithAggregatesFilter<"Log"> | string | null
+    apiEndpoint?: StringNullableWithAggregatesFilter<"Log"> | string | null
     ip?: StringWithAggregatesFilter<"Log"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Log"> | Date | string
   }
@@ -5650,6 +5668,7 @@ export namespace Prisma {
     action?: $Enums.Action | null
     recordId?: string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: string | null
     ip: string
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutLogsInput
@@ -5663,6 +5682,7 @@ export namespace Prisma {
     recordId?: string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     userId?: string | null
+    apiEndpoint?: string | null
     ip: string
     createdAt?: Date | string
   }
@@ -5674,6 +5694,7 @@ export namespace Prisma {
     action?: NullableEnumActionFieldUpdateOperationsInput | $Enums.Action | null
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutLogsNestedInput
@@ -5687,6 +5708,7 @@ export namespace Prisma {
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5699,6 +5721,7 @@ export namespace Prisma {
     recordId?: string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     userId?: string | null
+    apiEndpoint?: string | null
     ip: string
     createdAt?: Date | string
   }
@@ -5710,6 +5733,7 @@ export namespace Prisma {
     action?: NullableEnumActionFieldUpdateOperationsInput | $Enums.Action | null
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5722,6 +5746,7 @@ export namespace Prisma {
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6046,6 +6071,7 @@ export namespace Prisma {
     recordId?: SortOrder
     meta?: SortOrder
     userId?: SortOrder
+    apiEndpoint?: SortOrder
     ip?: SortOrder
     createdAt?: SortOrder
   }
@@ -6057,6 +6083,7 @@ export namespace Prisma {
     action?: SortOrder
     recordId?: SortOrder
     userId?: SortOrder
+    apiEndpoint?: SortOrder
     ip?: SortOrder
     createdAt?: SortOrder
   }
@@ -6068,6 +6095,7 @@ export namespace Prisma {
     action?: SortOrder
     recordId?: SortOrder
     userId?: SortOrder
+    apiEndpoint?: SortOrder
     ip?: SortOrder
     createdAt?: SortOrder
   }
@@ -6544,6 +6572,7 @@ export namespace Prisma {
     action?: $Enums.Action | null
     recordId?: string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: string | null
     ip: string
     createdAt?: Date | string
   }
@@ -6555,6 +6584,7 @@ export namespace Prisma {
     action?: $Enums.Action | null
     recordId?: string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: string | null
     ip: string
     createdAt?: Date | string
   }
@@ -6624,6 +6654,7 @@ export namespace Prisma {
     recordId?: StringNullableFilter<"Log"> | string | null
     meta?: JsonNullableFilter<"Log">
     userId?: StringNullableFilter<"Log"> | string | null
+    apiEndpoint?: StringNullableFilter<"Log"> | string | null
     ip?: StringFilter<"Log"> | string
     createdAt?: DateTimeFilter<"Log"> | Date | string
   }
@@ -6776,6 +6807,7 @@ export namespace Prisma {
     action?: $Enums.Action | null
     recordId?: string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: string | null
     ip: string
     createdAt?: Date | string
   }
@@ -6796,6 +6828,7 @@ export namespace Prisma {
     action?: NullableEnumActionFieldUpdateOperationsInput | $Enums.Action | null
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6807,6 +6840,7 @@ export namespace Prisma {
     action?: NullableEnumActionFieldUpdateOperationsInput | $Enums.Action | null
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6818,6 +6852,7 @@ export namespace Prisma {
     action?: NullableEnumActionFieldUpdateOperationsInput | $Enums.Action | null
     recordId?: NullableStringFieldUpdateOperationsInput | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
+    apiEndpoint?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
