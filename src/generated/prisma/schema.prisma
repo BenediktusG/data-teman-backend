@@ -45,7 +45,7 @@ model Data {
   id          String   @id @default(uuid())
   name        String
   description String?  @db.Text
-  Address     String
+  address     String
   birthDate   DateTime @db.Date
   photoLink   String?
   ownerId     String

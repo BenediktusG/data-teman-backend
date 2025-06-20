@@ -2227,7 +2227,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
-    Address: string | null
+    address: string | null
     birthDate: Date | null
     photoLink: string | null
     ownerId: string | null
@@ -2238,7 +2238,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
-    Address: string | null
+    address: string | null
     birthDate: Date | null
     photoLink: string | null
     ownerId: string | null
@@ -2249,7 +2249,7 @@ export namespace Prisma {
     id: number
     name: number
     description: number
-    Address: number
+    address: number
     birthDate: number
     photoLink: number
     ownerId: number
@@ -2262,7 +2262,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    Address?: true
+    address?: true
     birthDate?: true
     photoLink?: true
     ownerId?: true
@@ -2273,7 +2273,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    Address?: true
+    address?: true
     birthDate?: true
     photoLink?: true
     ownerId?: true
@@ -2284,7 +2284,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    Address?: true
+    address?: true
     birthDate?: true
     photoLink?: true
     ownerId?: true
@@ -2368,7 +2368,7 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
-    Address: string
+    address: string
     birthDate: Date
     photoLink: string | null
     ownerId: string
@@ -2396,7 +2396,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    Address?: boolean
+    address?: boolean
     birthDate?: boolean
     photoLink?: boolean
     ownerId?: boolean
@@ -2410,14 +2410,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    Address?: boolean
+    address?: boolean
     birthDate?: boolean
     photoLink?: boolean
     ownerId?: boolean
     createdAt?: boolean
   }
 
-  export type DataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "Address" | "birthDate" | "photoLink" | "ownerId" | "createdAt", ExtArgs["result"]["data"]>
+  export type DataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "address" | "birthDate" | "photoLink" | "ownerId" | "createdAt", ExtArgs["result"]["data"]>
   export type DataInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -2431,7 +2431,7 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
-      Address: string
+      address: string
       birthDate: Date
       photoLink: string | null
       ownerId: string
@@ -2809,7 +2809,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Data", 'String'>
     readonly name: FieldRef<"Data", 'String'>
     readonly description: FieldRef<"Data", 'String'>
-    readonly Address: FieldRef<"Data", 'String'>
+    readonly address: FieldRef<"Data", 'String'>
     readonly birthDate: FieldRef<"Data", 'DateTime'>
     readonly photoLink: FieldRef<"Data", 'String'>
     readonly ownerId: FieldRef<"Data", 'String'>
@@ -5155,7 +5155,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
-    Address: 'Address',
+    address: 'address',
     birthDate: 'birthDate',
     photoLink: 'photoLink',
     ownerId: 'ownerId',
@@ -5232,7 +5232,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
-    Address: 'Address',
+    address: 'address',
     photoLink: 'photoLink',
     ownerId: 'ownerId'
   };
@@ -5417,7 +5417,7 @@ export namespace Prisma {
     id?: StringFilter<"Data"> | string
     name?: StringFilter<"Data"> | string
     description?: StringNullableFilter<"Data"> | string | null
-    Address?: StringFilter<"Data"> | string
+    address?: StringFilter<"Data"> | string
     birthDate?: DateTimeFilter<"Data"> | Date | string
     photoLink?: StringNullableFilter<"Data"> | string | null
     ownerId?: StringFilter<"Data"> | string
@@ -5429,7 +5429,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    Address?: SortOrder
+    address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrderInput | SortOrder
     ownerId?: SortOrder
@@ -5445,7 +5445,7 @@ export namespace Prisma {
     NOT?: DataWhereInput | DataWhereInput[]
     name?: StringFilter<"Data"> | string
     description?: StringNullableFilter<"Data"> | string | null
-    Address?: StringFilter<"Data"> | string
+    address?: StringFilter<"Data"> | string
     birthDate?: DateTimeFilter<"Data"> | Date | string
     photoLink?: StringNullableFilter<"Data"> | string | null
     ownerId?: StringFilter<"Data"> | string
@@ -5457,7 +5457,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    Address?: SortOrder
+    address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrderInput | SortOrder
     ownerId?: SortOrder
@@ -5474,7 +5474,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Data"> | string
     name?: StringWithAggregatesFilter<"Data"> | string
     description?: StringNullableWithAggregatesFilter<"Data"> | string | null
-    Address?: StringWithAggregatesFilter<"Data"> | string
+    address?: StringWithAggregatesFilter<"Data"> | string
     birthDate?: DateTimeWithAggregatesFilter<"Data"> | Date | string
     photoLink?: StringNullableWithAggregatesFilter<"Data"> | string | null
     ownerId?: StringWithAggregatesFilter<"Data"> | string
@@ -5707,7 +5707,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    Address: string
+    address: string
     birthDate: Date | string
     photoLink?: string | null
     createdAt?: Date | string
@@ -5718,7 +5718,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    Address: string
+    address: string
     birthDate: Date | string
     photoLink?: string | null
     ownerId: string
@@ -5729,7 +5729,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5740,7 +5740,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     ownerId?: StringFieldUpdateOperationsInput | string
@@ -5751,7 +5751,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    Address: string
+    address: string
     birthDate: Date | string
     photoLink?: string | null
     ownerId: string
@@ -5762,7 +5762,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5772,7 +5772,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     ownerId?: StringFieldUpdateOperationsInput | string
@@ -6111,7 +6111,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    Address?: SortOrder
+    address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrder
     ownerId?: SortOrder
@@ -6122,7 +6122,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    Address?: SortOrder
+    address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrder
     ownerId?: SortOrder
@@ -6133,7 +6133,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    Address?: SortOrder
+    address?: SortOrder
     birthDate?: SortOrder
     photoLink?: SortOrder
     ownerId?: SortOrder
@@ -6756,7 +6756,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    Address: string
+    address: string
     birthDate: Date | string
     photoLink?: string | null
     createdAt?: Date | string
@@ -6766,7 +6766,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    Address: string
+    address: string
     birthDate: Date | string
     photoLink?: string | null
     createdAt?: Date | string
@@ -6867,7 +6867,7 @@ export namespace Prisma {
     id?: StringFilter<"Data"> | string
     name?: StringFilter<"Data"> | string
     description?: StringNullableFilter<"Data"> | string | null
-    Address?: StringFilter<"Data"> | string
+    address?: StringFilter<"Data"> | string
     birthDate?: DateTimeFilter<"Data"> | Date | string
     photoLink?: StringNullableFilter<"Data"> | string | null
     ownerId?: StringFilter<"Data"> | string
@@ -7119,7 +7119,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    Address: string
+    address: string
     birthDate: Date | string
     photoLink?: string | null
     createdAt?: Date | string
@@ -7150,7 +7150,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7160,7 +7160,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7170,7 +7170,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    Address?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     photoLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

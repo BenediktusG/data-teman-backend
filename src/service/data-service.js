@@ -1,4 +1,5 @@
 import { prismaClient } from "../application/database.js";
+import { logger } from "../application/logging.js";
 import { AuthorizationError } from "../error/authorization-error.js";
 import { NotFoundError } from "../error/not-found-error.js";
 import { createDataValidation, updateDataValidation } from "../validation/data-validation.js";
@@ -36,7 +37,7 @@ const get = async (userId, ip) => {
         apiEndpoint: "/data",
         message:"Get all data teman",
         tableName: "Data",
-        action: "GET",
+        action: "READ",
         meta: data,
         userId: userId,
         ip: ip,

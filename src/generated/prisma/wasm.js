@@ -133,7 +133,7 @@ exports.Prisma.DataScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  Address: 'Address',
+  address: 'address',
   birthDate: 'birthDate',
   photoLink: 'photoLink',
   ownerId: 'ownerId',
@@ -189,7 +189,7 @@ exports.Prisma.DataOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  Address: 'Address',
+  address: 'address',
   photoLink: 'photoLink',
   ownerId: 'ownerId'
 };
