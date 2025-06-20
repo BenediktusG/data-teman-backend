@@ -91,9 +91,11 @@ const login = async (request, ip) => {
     const refreshToken = v4();
 
     const result = await prismaClient.token.create({
-        token: refreshToken,
-        userId: user.id,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        data: {
+            token: refreshToken,
+            userId: user.id,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        },
     });
 
     await logger({

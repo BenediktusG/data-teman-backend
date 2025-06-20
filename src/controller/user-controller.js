@@ -30,6 +30,7 @@ const login = async (req, res, next) => {
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
             maxAge: process.env.REFRESH_TOKEN_COOKIE_AGE, 
         });
+
         res.status(200).json({
             success: true,
             data: {
