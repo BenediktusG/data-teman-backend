@@ -34,6 +34,7 @@ const register = async (request, ip) => {
     }
 
     user.password = await bcrypt.hash(user.password, 10);
+    delete user.confirmationPassword;
     const result = await prismaClient.user.create({
         data: user,
         select: {
