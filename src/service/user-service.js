@@ -30,7 +30,7 @@ const register = async (request, ip) => {
             action: "CREATE",
             ip: ip,
         });
-        throw new ConflictError('Username already exists');
+        throw new ConflictError('Email already used');
     }
 
     user.password = await bcrypt.hash(user.password, 10);
@@ -132,6 +132,9 @@ const logout = async (userId, refreshToken, accessToken ,ip) => {
         throw new AuthorizationError('You are not authorized to this action');
     }
     const result = await prismaClient.token.update({
+        where: {
+            token: refreshToken,
+        },
         data: {
             valid: false,
             usedAt: new Date(),
@@ -209,11 +212,6 @@ const editUserInformation = async (request, userId, ip) => {
 };
 
 const deleteUser = async (userId, ip) => {
-    await prismaClient.user.delete({
-        where: {
-            id: userId,
-        },
-    });
     await logger({
         apiEndpoint: "/auth/me",
         message:"Delete user",
@@ -221,6 +219,11 @@ const deleteUser = async (userId, ip) => {
         action: "DELETE",
         userId: userId,
         ip: ip,
+    });
+    await prismaClient.user.delete({
+        where: {
+            id: userId,
+        },
     });
 };
 
@@ -292,7 +295,7 @@ const refresh = async (refreshToken, ip) => {
         throw new AuthenticationError('Failed to refresh access token due to invalid refresh token');
     }
 
-    if (!token.valid || token.expiresAt > Date.now()) {
+    if (!token.valid || token.expiresAt <= Date.now()) {
         token.valid = false,
         await logger({
             apiEndpoint: "/auth/session/refresh",
@@ -311,7 +314,7 @@ const refresh = async (refreshToken, ip) => {
         },
         data: {
             valid: false,
-            expiresAt: Date.now(),
+            expiresAt: new Date(),
         },
     }); 
 
@@ -319,9 +322,11 @@ const refresh = async (refreshToken, ip) => {
     const newRefreshToken = v4();
 
     const result = await prismaClient.token.create({
-        token: newRefreshToken,
-        userId: token.user.id,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        data: {
+            token: newRefreshToken,
+            userId: token.user.id,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        },
     });
 
     await logger({

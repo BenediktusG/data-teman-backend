@@ -16,7 +16,7 @@ export const authMiddleware = async (req, res, next) => {
             next(new AuthenticationError('Your token is invalid or expired'));
         } else {
             const isBlacklisted = await redis.get(`blacklistedAccessToken:${token}`);
-            if (!isBlacklisted) {
+            if (isBlacklisted) {
                 next(new AuthenticationError('Your token is invalid or expired'));
             }
             req.userId = id;
