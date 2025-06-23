@@ -18,7 +18,7 @@ userRouter.patch('/auth/password', userController.changePassword);
 userRouter.post('/data', dataController.register);
 userRouter.get('/data', dataController.get);
 userRouter.get('/data/:dataId', dataController.getDataWithId);
-userRouter.patch('/data/:dataId', dataController.update);
+userRouter.put('/data/:dataId', dataController.update);
 userRouter.delete('/data/:dataId', dataController.deleteData);
 
 // Log API
