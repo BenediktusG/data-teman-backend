@@ -45,6 +45,50 @@ const get = async (userId, ip) => {
     return data;
 };
 
+const getDataWithId = async (userId, dataId, ip) => {
+    const data = await prismaClient.data.findUnique({
+        where: {
+            id: dataId,
+        },
+    });
+    if (!data) {
+        await logger({
+            apiEndpoint: "/data/:dataId",
+            message:"Failed to get data teman due to invalid data id",
+            tableName: "Data",
+            action: "READ",
+            userId: userId,
+            ip: ip,
+        });
+        throw new NotFoundError('Data ID is invalid');
+    }
+
+    if (data.ownerId !== userId) {
+        await logger({
+            apiEndpoint: "/data/:dataId",
+            message:"Failed to get data teman due to forbidden access",
+            tableName: "Data",
+            action: "READ",
+            userId: userId,
+            recordId: dataId,
+            ip: ip,
+        });
+        throw new AuthorizationError('You are not authorized to do this action');
+    }
+
+    await logger({
+        apiEndpoint: "/data/:dataId",
+        message:"Get data teman",
+        tableName: "Data",
+        action: "READ",
+        recordId: data.id,
+        meta: data,
+        userId: userId,
+        ip: ip,
+    });
+    return data;
+};
+
 const update = async (request, dataId ,userId, ip) => {
     request = validate(updateDataValidation, request);
     const data = await prismaClient.data.findUnique({
@@ -59,7 +103,6 @@ const update = async (request, dataId ,userId, ip) => {
             tableName: "Data",
             action: "UPDATE",
             userId: userId,
-            recordId: dataId,
             ip: ip,
         });
         throw new NotFoundError('Data ID is invalid');
@@ -150,4 +193,5 @@ export default {
     get,
     update,
     deleteData,
+    getDataWithId,
 };

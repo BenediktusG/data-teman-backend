@@ -293,6 +293,9 @@ paths:
                   data:
                     type: object
                     properties:
+                      id: 
+                        type: string
+                        format: uuid
                       name:
                         type: string
                       description:
@@ -326,6 +329,9 @@ paths:
                     items:
                       type: object
                       properties:  
+                        id: 
+                          type: string
+                          format: uuid
                         name:
                           type: string
                         description:
@@ -341,6 +347,42 @@ paths:
                           type: string
                           format: date
   /data/{dataId}:
+    get:
+      tags:
+        - Data Teman
+      description: Update specific data teman
+      parameters:
+        - $ref: '#/components/parameters/dataId'
+      responses:
+        200:
+          description: Success create new data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id: 
+                        type: string
+                        format: uuid
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      address:
+                        type: string
+                      birthDate:
+                        type: string
+                        format: date
+                      photoLink:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
     put:
       tags:
         - Data Teman
@@ -365,7 +407,7 @@ paths:
                 photoLink:
                   type: string
       responses:
-        201:
+        200:
           description: Success create new data
           content:
             application/json:
@@ -377,6 +419,9 @@ paths:
                   data:
                     type: object
                     properties:
+                      id: 
+                        type: string
+                        format: uuid
                       name:
                         type: string
                       description:

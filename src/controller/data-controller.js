@@ -20,6 +20,18 @@ const get = async (req, res, next) => {
     });
 };
 
+const getDataWithId = async (req, res, next) => {
+    try {
+        const result = await dataService.getDataWithId(req.userId, req.params.dataId, req.ip);
+        res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (e) {
+        next(e);
+    }
+};
+
 const update = async (req, res, next) => {
     try {
         const result = await dataService.update(req.body, req.params.dataId, req.userId, req.ip);
@@ -51,4 +63,5 @@ export default {
     get,
     update,
     deleteData,
+    getDataWithId,
 };
