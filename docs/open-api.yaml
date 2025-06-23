@@ -491,6 +491,9 @@ paths:
                           type: object
                         userId:
                           type: string
+                        email:
+                          type: string
+                          format: email
                         ip:
                           type: string
                         createdAt:
