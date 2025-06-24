@@ -25,24 +25,30 @@ web.use(publicRouter);
 web.use(userRouter);
 web.use(errorMiddleware);
 
-const certPath = path.join(__dirname, '..', '..' ,'certs', 'localhost.pem');
-const keyPath = path.join(__dirname, '..', '..', 'certs', 'localhost-key.pem');
+if (process.env.NODE_ENV === 'production') {
+    const certPath = path.join(__dirname, '..', '..' ,'certs', 'localhost.pem');
+    const keyPath = path.join(__dirname, '..', '..', 'certs', 'localhost-key.pem');
 
-if (!fs.existsSync(certPath) || !fs.existsSync(keyPath)) {
-  console.error('Error: SSL certificate or key file not found!');
-  console.error(`Expected cert: ${certPath}`);
-  console.error(`Expected key: ${keyPath}`);
-  console.error('Please make sure you have run mkcert and placed the files correctly.');
-  process.exit(1);
-};
+    if (!fs.existsSync(certPath) || !fs.existsSync(keyPath)) {
+    console.error('Error: SSL certificate or key file not found!');
+    console.error(`Expected cert: ${certPath}`);
+    console.error(`Expected key: ${keyPath}`);
+    console.error('Please make sure you have run mkcert and placed the files correctly.');
+    process.exit(1);
+    };
 
-const sslOptions = {
-    key: fs.readFileSync(keyPath, 'utf8'),
-    cert: fs.readFileSync(certPath, 'utf8'),
-};
+    const sslOptions = {
+        key: fs.readFileSync(keyPath, 'utf8'),
+        cert: fs.readFileSync(certPath, 'utf8'),
+    };
 
-const httpsServer = https.createServer(sslOptions, web);
+    const httpsServer = https.createServer(sslOptions, web);
 
-httpsServer.listen(process.env.APP_PORT, () => {
-    console.log('Application is running');
-});
+    httpsServer.listen(process.env.APP_PORT, () => {
+        console.log('Application is running');
+    });
+} else {
+    web.listen(process.env.APP_PORT, () => {
+        console.log('Application is running');
+    });
+}
