@@ -18,7 +18,7 @@ const login = async (req, res, next) => {
         res.cookie('accessToken', result.accessToken, {
             path:'/',
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
             maxAge: process.env.ACCESS_TOKEN_COOKIE_AGE,  
         });
@@ -26,7 +26,7 @@ const login = async (req, res, next) => {
         res.cookie('refreshToken', result.refreshToken, {
             path: '/auth/session',
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
             maxAge: process.env.REFRESH_TOKEN_COOKIE_AGE, 
         });
@@ -108,7 +108,7 @@ const refresh = async (req, res, next) => {
          res.cookie('accessToken', result.accessToken, {
             path:'/',
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
             maxAge: process.env.ACCESS_TOKEN_COOKIE_AGE, 
         });
@@ -116,7 +116,7 @@ const refresh = async (req, res, next) => {
         res.cookie('refreshToken', result.refreshToken, {
             path: '/auth/session',
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: process.env.NODE_ENV === 'production' ? "strict" : "none",
             maxAge: process.env.REFRESH_TOKEN_COOKIE_AGE, 
         });
