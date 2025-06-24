@@ -25,7 +25,7 @@ web.use(publicRouter);
 web.use(userRouter);
 web.use(errorMiddleware);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
     const certPath = path.join(__dirname, '..', '..' ,'certs', 'localhost.pem');
     const keyPath = path.join(__dirname, '..', '..', 'certs', 'localhost-key.pem');
 
