@@ -3,7 +3,7 @@ import Joi from 'joi';
 export const registerUserValidation = Joi.object({
     fullName: Joi.string().min(1).max(191).pattern(/^[A-Za-zÀ-ÿ]+(?:[' -][A-Za-zÀ-ÿ]+)*$/).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&_]{8,128}$/).required(),
+    password: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/).required(),
     confirmationPassword: Joi.string().valid(Joi.ref('password')).required().messages({
         'any.only':'Confirmation password does not match password',
     }),
@@ -20,7 +20,7 @@ export const editUserInformationValidation = Joi.object({
 
 export const changePasswordValidation = Joi.object({
     oldPassword: Joi.string().min(8).required(),
-    newPassword: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&_]{8,128}$/).required(),
+    newPassword: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/).required(),
     confirmationPassword: Joi.string().valid(Joi.ref('newPassword')).required().messages({
         'any.only':'Confirmation password does not match password',
     }),

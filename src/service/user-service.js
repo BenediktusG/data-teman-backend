@@ -94,7 +94,7 @@ const login = async (request, ip) => {
         data: {
             token: refreshToken,
             userId: user.id,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            expiresAt: new Date(Date.now() + Number(process.env.REFRESH_TOKEN_COOKIE_AGE)),
         },
     });
 
@@ -314,7 +314,7 @@ const refresh = async (refreshToken, ip) => {
         },
         data: {
             valid: false,
-            expiresAt: new Date(),
+            usedAt: new Date(),
         },
     }); 
 
@@ -325,7 +325,7 @@ const refresh = async (refreshToken, ip) => {
         data: {
             token: newRefreshToken,
             userId: token.user.id,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            expiresAt: new Date(Date.now() + Number(process.env.REFRESH_TOKEN_COOKIE_AGE)),
         },
     });
 
