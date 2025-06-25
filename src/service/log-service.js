@@ -14,6 +14,9 @@ const get = async (userRole) => {
                 },
             },
         },
+        orderBy: {
+            createdAt: 'desc',
+        },
     });
     return extractLogs(result);
 };
