@@ -4,7 +4,7 @@ import { extractLogs } from "../utils/logUtils.js";
 
 const get = async (userRole) => {
     if (userRole !== "ADMIN") {
-        throw new AuthorizationError("You are not authorized to access this resource");
+        throw new AuthorizationError("Access denied.");
     }
     const result = await prismaClient.log.findMany({
         include: {

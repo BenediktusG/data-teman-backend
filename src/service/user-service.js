@@ -405,8 +405,8 @@ const getUserInformation = async (userId, ip) => {
       id: true,
       fullName: true,
       email: true,
-      role: true,
-      registeredAt: true,
+      // role: true,
+      // registeredAt: true,
     },
   });
   await logger({
@@ -420,6 +420,33 @@ const getUserInformation = async (userId, ip) => {
     ip: ip,
   });
   return result;
+};
+
+const getAdminInformation = async (userId, ip) => {
+  const user = await prismaClient.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      role: true,
+    },
+  });
+
+  if (!user || user.role !== "ADMIN") {
+    throw new AuthorizationError("Access denied.");
+  }
+
+  await logger({
+    apiEndpoint: "/admin/me",
+    message: "Get admin profile",
+    tableName: "User",
+    action: "READ",
+    recordId: user?.id,
+    meta: user,
+    userId: userId,
+    ip,
+  });
+
+  return user;
 };
 
 const editUserInformation = async (request, userId, ip) => {
@@ -613,4 +640,5 @@ export default {
   deleteUser,
   changePassword,
   refresh,
+  getAdminInformation,
 };
