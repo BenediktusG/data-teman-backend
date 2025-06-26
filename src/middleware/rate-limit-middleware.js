@@ -37,4 +37,34 @@ const generalRateLimit = rateLimit({
   legacyHeaders: false,
 });
 
-export { otpRateLimit, otpVerifyRateLimit, generalRateLimit };
+// registering rate limiters by email and IP
+const otpLimiterByEmail = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 menit
+  max: 3, // 3 OTP requests per email in 15 minutes
+  keyGenerator: (req) => req.body?.email?.trim().toLowerCase() || req.ip,
+  message: {
+    success: false,
+    error: "Too many OTP requests for this email.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const otpLimiterByIP = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 3, // 3 OTP requests per IP
+  message: {
+    success: false,
+    error: "Too many OTP requests from your IP.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+export {
+  otpRateLimit,
+  otpVerifyRateLimit,
+  generalRateLimit,
+  otpLimiterByEmail,
+  otpLimiterByIP,
+};
