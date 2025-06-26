@@ -61,10 +61,24 @@ const otpLimiterByIP = rateLimit({
   legacyHeaders: false,
 });
 
+const loginRateLimit = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 10, // Limit to 1 login attempt per IP in 15 minutes
+  message: {
+    success: false,
+    error: "Terlalu banyak percobaan login. Coba lagi nanti.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true,
+  skipFailedRequests: false,
+});
+
 export {
   otpRateLimit,
   otpVerifyRateLimit,
   generalRateLimit,
   otpLimiterByEmail,
   otpLimiterByIP,
+  loginRateLimit,
 };

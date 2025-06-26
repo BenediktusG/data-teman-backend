@@ -299,13 +299,14 @@ const login = async (request, ip) => {
   if (!user) {
     await logger({
       apiEndpoint: "/auth/login",
-      message: "Failed to login because of invalid email",
+      message: "Login attempt with unregistered email",
       tableName: "Token",
       action: "CREATE",
       ip: ip,
     });
-    throw new AuthenticationError("username and password didn't match");
+    throw new AuthenticationError("Invalid credentials, please try again");
   }
+
   const isPasswordValid = await bcrypt.compare(
     credential.password,
     user.password
@@ -318,7 +319,7 @@ const login = async (request, ip) => {
       action: "CREATE",
       ip: ip,
     });
-    throw new AuthenticationError("username and password didn't match");
+    throw new AuthenticationError("Invalid credentials, please try again");
   }
 
   const accessToken = generateToken(user);
