@@ -163,6 +163,17 @@ exports.Prisma.TokenScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.OtpScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  otpCode: 'otpCode',
+  attempts: 'attempts',
+  expiresAt: 'expiresAt',
+  userData: 'userData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -220,6 +231,13 @@ exports.Prisma.TokenOrderByRelevanceFieldEnum = {
   token: 'token',
   userId: 'userId'
 };
+
+exports.Prisma.OtpOrderByRelevanceFieldEnum = {
+  id: 'id',
+  email: 'email',
+  otpCode: 'otpCode',
+  userData: 'userData'
+};
 exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER',
   ADMIN: 'ADMIN'
@@ -238,7 +256,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Data: 'Data',
   Log: 'Log',
-  Token: 'Token'
+  Token: 'Token',
+  Otp: 'Otp'
 };
 
 /**

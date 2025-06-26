@@ -22,61 +22,72 @@ enum UserRole {
 enum Action {
   CREATE
   READ
-  UPDATE 
+  UPDATE
   DELETE
   LOGIN
   LOGOUT
 }
 
 model User {
-  id String @id @default(uuid())
-  fullName String
-  email String @unique
-  password String
-  role UserRole @default(USER)
+  id           String   @id @default(uuid())
+  fullName     String
+  email        String   @unique
+  password     String
+  role         UserRole @default(USER)
   registeredAt DateTime @default(now())
 
-  data Data[]
-  logs Log[]
+  data  Data[]
+  logs  Log[]
   token Token[]
 }
 
 model Data {
-  id String @id @default(uuid())
-  name String 
-  description String? @db.Text
-  address String
-  birthDate DateTime @db.Date
-  photoLink String?
-  ownerId String
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  address     String
+  birthDate   DateTime @db.Date
+  photoLink   String?
+  ownerId     String
+  createdAt   DateTime @default(now())
 
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Log {
-  id String @id @default(uuid())
-  message String?
-  tableName String?
-  action Action?
-  recordId String?
-  meta Json?
-  userId String?
+  id          String   @id @default(uuid())
+  message     String?
+  tableName   String?
+  action      Action?
+  recordId    String?
+  meta        Json?
+  userId      String?
   apiEndpoint String?
-  ip String
-  createdAt DateTime @default(now())
+  ip          String
+  createdAt   DateTime @default(now())
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model Token {
-  id String @id @default(uuid())
-  token String @unique @db.VarChar(256)
-  userId String
-  valid Boolean @default(true)
+  id        String    @id @default(uuid())
+  token     String    @unique @db.VarChar(256)
+  userId    String
+  valid     Boolean   @default(true)
   expiresAt DateTime
-  usedAt DateTime?
-  createdAt DateTime @default(now())
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  email     String   @db.VarChar(255)
+  otpCode   String   @db.VarChar(6)
+  attempts  Int      @default(0)
+  expiresAt DateTime
+  userData  String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
