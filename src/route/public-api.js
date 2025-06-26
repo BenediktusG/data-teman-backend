@@ -1,6 +1,7 @@
 import express from "express";
 import userController from "../controller/user-controller.js";
 import {
+  generalRateLimit,
   otpRateLimit,
   otpVerifyRateLimit,
 } from "../middleware/rate-limit-middleware.js";
@@ -15,7 +16,7 @@ export const publicRouter = express.Router();
 
 publicRouter.post(
   "/auth/register",
-  otpRateLimit,
+  generalRateLimit,
   validateData(registerUserValidation),
   userController.register
 );

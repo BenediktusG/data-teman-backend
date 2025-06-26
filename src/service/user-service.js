@@ -147,8 +147,8 @@ const register = async (request) => {
 
   return {
     message: "OTP sent successfully. Please verify to complete registration.",
-    email: user.email,
-    expiresIn: `${OTP_EXPIRY_MINUTES} minutes`,
+    // email: user.email,
+    // expiresIn: `${OTP_EXPIRY_MINUTES} minutes`,
   };
 };
 
@@ -161,21 +161,20 @@ const verifyRegistration = async (request, ip) => {
   });
 
   if (!otpRecord) {
-    throw new AuthenticationError(
-      "No OTP found for this email. Please request a new one."
-    );
+    console.log("OTP check failed: no record found for", email);
+    throw new AuthenticationError("OTP is invalid or has expired.");
   }
 
   if (new Date() > otpRecord.expiresAt) {
+    console.log("OTP expired for", email);
     await prisma.otp.delete({ where: { id: otpRecord.id } });
-    throw new AuthenticationError("OTP has expired. Please request a new one.");
+    throw new AuthenticationError("OTP is invalid or has expired.");
   }
 
   if (otpRecord.attempts >= MAX_OTP_ATTEMPTS) {
+    console.log("OTP attempts exceeded for", email);
     await prisma.otp.delete({ where: { id: otpRecord.id } });
-    throw new AuthenticationError(
-      "Maximum verification attempts exceeded. Please request a new OTP."
-    );
+    throw new AuthenticationError("OTP is invalid or has expired.");
   }
 
   if (otpRecord.otpCode !== otpCode) {
@@ -191,14 +190,14 @@ const verifyRegistration = async (request, ip) => {
     const remainingAttempts = MAX_OTP_ATTEMPTS - updated.attempts;
     if (remainingAttempts <= 0) {
       await prisma.otp.delete({ where: { id: otpRecord.id } });
-      throw new AuthenticationError(
-        "Invalid OTP. Maximum attempts reached. Please request a new OTP."
-      );
+      console.warn(`OTP attempts exceeded for email: ${otpRecord.email}`);
+      throw new AuthenticationError("OTP is invalid or has expired.");
     }
 
-    throw new AuthenticationError(
-      `Invalid OTP code. ${remainingAttempts} attempts remaining.`
+    console.log(
+      `Invalid OTP code for ${email}. ${remainingAttempts} attempts remaining.`
     );
+    throw new AuthenticationError(`Invalid OTP code.`);
   }
 
   const userData = JSON.parse(otpRecord.userData);
@@ -246,9 +245,10 @@ const resendOtp = async (email) => {
 
     if (timeSinceCreation < waitTime) {
       const remainingWait = Math.ceil(waitTime - timeSinceCreation);
-      throw new ConflictError(
-        `Please wait ${remainingWait} seconds before requesting a new OTP.`
+      console.warn(
+        `[OTP] Resend blocked for ${email}. ${remainingWait}s remaining.`
       );
+      throw new ConflictError("Please wait before requesting a new OTP.");
     }
   }
 
@@ -280,10 +280,12 @@ const resendOtp = async (email) => {
 
   await sendOtpEmail(email, otpCode);
 
+  console.log(
+    `[OTP] Resent OTP for ${email}. ExpiresIn: ${OTP_EXPIRY_MINUTES} minutes`
+  );
+
   return {
     message: "OTP resent successfully",
-    email,
-    expiresIn: `${OTP_EXPIRY_MINUTES} minutes`,
   };
 };
 
@@ -546,7 +548,7 @@ const refresh = async (refreshToken, ip) => {
   }
 
   if (!token.valid || token.expiresAt <= Date.now()) {
-    (token.valid = false),
+    ((token.valid = false),
       await logger({
         apiEndpoint: "/auth/session/refresh",
         message: "Failed to refresh access token due to invalid access token",
@@ -554,7 +556,7 @@ const refresh = async (refreshToken, ip) => {
         action: "CREATE",
         userId: token.user.id,
         ip: ip,
-      });
+      }));
     throw new AuthenticationError(
       "Failed to refresh access token due to invalid refresh token"
     );
