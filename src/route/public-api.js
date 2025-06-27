@@ -1,6 +1,9 @@
 import express from "express";
 import userController from "../controller/user-controller.js";
 import {
+  loginRateLimit,
+  otpLimiterByEmail,
+  otpLimiterByIP,
   otpRateLimit,
   otpVerifyRateLimit,
 } from "../middleware/rate-limit-middleware.js";
@@ -15,7 +18,8 @@ export const publicRouter = express.Router();
 
 publicRouter.post(
   "/auth/register",
-  otpRateLimit,
+  otpLimiterByEmail,
+  otpLimiterByIP,
   validateData(registerUserValidation),
   userController.register
 );
@@ -34,5 +38,5 @@ publicRouter.post(
   userController.resendOtp
 );
 
-publicRouter.post("/auth/login", userController.login);
+publicRouter.post("/auth/login", loginRateLimit, userController.login);
 publicRouter.post("/auth/session/refresh", userController.refresh);

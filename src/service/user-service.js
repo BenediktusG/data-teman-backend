@@ -16,6 +16,9 @@ import { AuthorizationError } from "../error/authorization-error.js";
 import { redis } from "../application/redis.js";
 import { Resend } from "resend";
 import crypto from "crypto";
+import xss from "xss";
+import { otpUserDataValidation } from "../validation/data-validation.js";
+import { ClientError } from "../error/client-error.js";
 
 const prisma = prismaClient;
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -26,6 +29,16 @@ const MAX_FAILED_ATTEMPTS = parseInt(process.env.MAX_FAILED_ATTEMPTS);
 const OTP_BLOCK_DURATION_MINUTES = parseInt(
   process.env.OTP_BLOCK_DURATION_MINUTES
 );
+
+const isMaliciousInput = (input) => {
+  const sanitized = xss(input, {
+    whiteList: {},
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ["script", "style", "iframe", "object", "embed"],
+  });
+
+  return input !== sanitized;
+};
 
 const generateOtp = () => {
   return crypto.randomInt(100000, 999999).toString();
@@ -104,6 +117,16 @@ const checkRecentAttempts = async (email) => {
 const register = async (request) => {
   const user = validate(registerUserValidation, request);
 
+  if (isMaliciousInput(user.email) || isMaliciousInput(user.fullName)) {
+    console.warn("Potential XSS input detected:", {
+      email: user.email,
+      fullName: user.fullName,
+    });
+    throw new ClientError(
+      "Invalid input. Please check your data and try again."
+    );
+  }
+
   const isUserExists = await prismaClient.user.findUnique({
     where: { email: user.email },
     select: { id: true },
@@ -147,13 +170,23 @@ const register = async (request) => {
 
   return {
     message: "OTP sent successfully. Please verify to complete registration.",
-    email: user.email,
-    expiresIn: `${OTP_EXPIRY_MINUTES} minutes`,
+    // email: user.email,
+    // expiresIn: `${OTP_EXPIRY_MINUTES} minutes`,
   };
 };
 
 const verifyRegistration = async (request, ip) => {
   const { email, otpCode } = request;
+
+  if (isMaliciousInput(email) || isMaliciousInput(otpCode)) {
+    console.warn("Potential XSS input during OTP verification:", {
+      email,
+      otpCode,
+    });
+    throw new ClientError(
+      "Invalid input. Please check your data and try again."
+    );
+  }
 
   const otpRecord = await prisma.otp.findFirst({
     where: { email },
@@ -161,21 +194,20 @@ const verifyRegistration = async (request, ip) => {
   });
 
   if (!otpRecord) {
-    throw new AuthenticationError(
-      "No OTP found for this email. Please request a new one."
-    );
+    console.log("OTP check failed: no record found for", email);
+    throw new AuthenticationError("OTP is invalid or has expired.");
   }
 
   if (new Date() > otpRecord.expiresAt) {
+    console.log("OTP expired for", email);
     await prisma.otp.delete({ where: { id: otpRecord.id } });
-    throw new AuthenticationError("OTP has expired. Please request a new one.");
+    throw new AuthenticationError("OTP is invalid or has expired.");
   }
 
   if (otpRecord.attempts >= MAX_OTP_ATTEMPTS) {
+    console.log("OTP attempts exceeded for", email);
     await prisma.otp.delete({ where: { id: otpRecord.id } });
-    throw new AuthenticationError(
-      "Maximum verification attempts exceeded. Please request a new OTP."
-    );
+    throw new AuthenticationError("OTP is invalid or has expired.");
   }
 
   if (otpRecord.otpCode !== otpCode) {
@@ -191,17 +223,32 @@ const verifyRegistration = async (request, ip) => {
     const remainingAttempts = MAX_OTP_ATTEMPTS - updated.attempts;
     if (remainingAttempts <= 0) {
       await prisma.otp.delete({ where: { id: otpRecord.id } });
-      throw new AuthenticationError(
-        "Invalid OTP. Maximum attempts reached. Please request a new OTP."
-      );
+      console.warn(`OTP attempts exceeded for email: ${otpRecord.email}`);
+      throw new AuthenticationError("OTP is invalid or has expired.");
     }
 
-    throw new AuthenticationError(
-      `Invalid OTP code. ${remainingAttempts} attempts remaining.`
+    console.log(
+      `Invalid OTP code for ${email}. ${remainingAttempts} attempts remaining.`
     );
+    throw new AuthenticationError(`Invalid OTP code.`);
   }
 
   const userData = JSON.parse(otpRecord.userData);
+
+  const { error } = otpUserDataValidation.validate(userData);
+  if (error) {
+    console.warn("Invalid userData from OTP record:", error.message);
+    throw new ClientError("Invalid user data. Please register again.");
+  }
+
+  if (
+    isMaliciousInput(userData.fullName) ||
+    isMaliciousInput(userData.password)
+  ) {
+    console.warn("Potential XSS or tampering in userData:", userData);
+    throw new ClientError("Invalid user data. Please register again.");
+  }
+
   await prisma.otp.delete({ where: { id: otpRecord.id } });
 
   const userToCreate = {
@@ -210,31 +257,40 @@ const verifyRegistration = async (request, ip) => {
     password: userData.password,
   };
 
-  const result = await prismaClient.user.create({
-    data: userToCreate,
-    select: {
-      id: true,
-      fullName: true,
-      email: true,
-      role: true,
-      registeredAt: true,
-    },
-  });
+  const result = await prismaClient.$transaction(async (tx) => {
+    const newUser = await tx.user.create({
+      data: userToCreate,
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        role: true,
+        registeredAt: true,
+      },
+    });
 
-  await logger({
-    apiEndpoint: "/auth/register/verify",
-    message: "User registered successfully after OTP verification",
-    tableName: "User",
-    action: "CREATE",
-    recordId: result.id,
-    meta: result,
-    ip: ip,
+    await logger({
+      apiEndpoint: "/auth/register/verify",
+      message: "User registered successfully after OTP verification",
+      tableName: "User",
+      action: "CREATE",
+      recordId: newUser.id,
+      meta: newUser,
+      ip: ip,
+    });
+
+    return newUser;
   });
 
   return result;
 };
 
 const resendOtp = async (email) => {
+  if (!email || typeof email !== "string" || isMaliciousInput(email)) {
+    console.warn("Potential XSS or invalid email in resendOtp:", email);
+    throw new ClientError("Invalid email. Please check and try again.");
+  }
+
   const existingOtp = await prisma.otp.findFirst({
     where: { email },
     orderBy: { createdAt: "desc" },
@@ -246,9 +302,10 @@ const resendOtp = async (email) => {
 
     if (timeSinceCreation < waitTime) {
       const remainingWait = Math.ceil(waitTime - timeSinceCreation);
-      throw new ConflictError(
-        `Please wait ${remainingWait} seconds before requesting a new OTP.`
+      console.warn(
+        `[OTP] Resend blocked for ${email}. ${remainingWait}s remaining.`
       );
+      throw new ConflictError("Please wait before requesting a new OTP.");
     }
   }
 
@@ -280,15 +337,26 @@ const resendOtp = async (email) => {
 
   await sendOtpEmail(email, otpCode);
 
+  console.log(
+    `[OTP] Resent OTP for ${email}. ExpiresIn: ${OTP_EXPIRY_MINUTES} minutes`
+  );
+
   return {
     message: "OTP resent successfully",
-    email,
-    expiresIn: `${OTP_EXPIRY_MINUTES} minutes`,
   };
 };
 
 const login = async (request, ip) => {
   const credential = validate(loginValidation, request);
+
+  if (
+    isMaliciousInput(credential.email) ||
+    isMaliciousInput(credential.password)
+  ) {
+    console.warn("Potential XSS input in login:", credential);
+    throw new ClientError("Invalid credentials, please try again.");
+  }
+
   const user = await prismaClient.user.findUnique({
     where: {
       email: credential.email,
@@ -297,13 +365,14 @@ const login = async (request, ip) => {
   if (!user) {
     await logger({
       apiEndpoint: "/auth/login",
-      message: "Failed to login because of invalid email",
+      message: "Login attempt with unregistered email",
       tableName: "Token",
       action: "CREATE",
       ip: ip,
     });
-    throw new AuthenticationError("username and password didn't match");
+    throw new AuthenticationError("Invalid credentials, please try again");
   }
+
   const isPasswordValid = await bcrypt.compare(
     credential.password,
     user.password
@@ -316,7 +385,7 @@ const login = async (request, ip) => {
       action: "CREATE",
       ip: ip,
     });
-    throw new AuthenticationError("username and password didn't match");
+    throw new AuthenticationError("Invalid credentials, please try again");
   }
 
   const accessToken = generateToken(user);
@@ -402,10 +471,11 @@ const getUserInformation = async (userId, ip) => {
       id: true,
       fullName: true,
       email: true,
-      role: true,
       registeredAt: true,
+      // role: true,
     },
   });
+
   await logger({
     apiEndpoint: "/auth/me",
     message: "Get detailed user information",
@@ -419,8 +489,41 @@ const getUserInformation = async (userId, ip) => {
   return result;
 };
 
+const getAdminInformation = async (userId, ip) => {
+  const user = await prismaClient.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      role: true,
+    },
+  });
+
+  if (!user || user.role !== "ADMIN") {
+    throw new AuthorizationError("Access denied.");
+  }
+
+  await logger({
+    apiEndpoint: "/admin/me",
+    message: "Get admin profile",
+    tableName: "User",
+    action: "READ",
+    recordId: user?.id,
+    meta: user,
+    userId: userId,
+    ip,
+  });
+
+  return user;
+};
+
 const editUserInformation = async (request, userId, ip) => {
   const { fullName } = validate(editUserInformationValidation, request);
+
+  if (isMaliciousInput(fullName)) {
+    console.warn("Potential XSS in fullName during user update:", fullName);
+    throw new ClientError("Invalid input. Please check and try again.");
+  }
+
   const result = await prismaClient.user.update({
     where: {
       id: userId,
@@ -431,9 +534,9 @@ const editUserInformation = async (request, userId, ip) => {
     select: {
       id: true,
       fullName: true,
-      email: true,
-      role: true,
-      registeredAt: true,
+      // email: true,
+      // role: true,
+      // registeredAt: true,
     },
   });
 
@@ -469,6 +572,15 @@ const deleteUser = async (userId, ip) => {
 
 const changePassword = async (request, userId, ip) => {
   request = validate(changePasswordValidation, request);
+
+  if (
+    isMaliciousInput(request.oldPassword) ||
+    isMaliciousInput(request.newPassword)
+  ) {
+    console.warn("Potential XSS or invalid input in password change:", request);
+    throw new ClientError("Invalid input. Please check and try again.");
+  }
+
   const user = await prismaClient.user.findUnique({
     where: {
       id: userId,
@@ -546,7 +658,7 @@ const refresh = async (refreshToken, ip) => {
   }
 
   if (!token.valid || token.expiresAt <= Date.now()) {
-    (token.valid = false),
+    ((token.valid = false),
       await logger({
         apiEndpoint: "/auth/session/refresh",
         message: "Failed to refresh access token due to invalid access token",
@@ -554,7 +666,7 @@ const refresh = async (refreshToken, ip) => {
         action: "CREATE",
         userId: token.user.id,
         ip: ip,
-      });
+      }));
     throw new AuthenticationError(
       "Failed to refresh access token due to invalid refresh token"
     );
@@ -610,4 +722,5 @@ export default {
   deleteUser,
   changePassword,
   refresh,
+  getAdminInformation,
 };

@@ -95,6 +95,18 @@ const getUserInformation = async (req, res, next) => {
   }
 };
 
+const getAdminInformation = async (req, res, next) => {
+  try {
+    const result = await userService.getAdminInformation(req.userId, req.ip);
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 const editUserInformation = async (req, res, next) => {
   try {
     const result = await userService.editUserInformation(
@@ -182,4 +194,5 @@ export default {
   deleteUser,
   changePassword,
   refresh,
+  getAdminInformation,
 };
