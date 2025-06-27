@@ -16,6 +16,8 @@ import { AuthorizationError } from "../error/authorization-error.js";
 import { redis } from "../application/redis.js";
 import { Resend } from "resend";
 import crypto from "crypto";
+import xss from "xss";
+import { otpUserDataValidation } from "../validation/data-validation.js";
 
 const prisma = prismaClient;
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -26,6 +28,16 @@ const MAX_FAILED_ATTEMPTS = parseInt(process.env.MAX_FAILED_ATTEMPTS);
 const OTP_BLOCK_DURATION_MINUTES = parseInt(
   process.env.OTP_BLOCK_DURATION_MINUTES
 );
+
+const isMaliciousInput = (input) => {
+  const sanitized = xss(input, {
+    whiteList: {},
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ["script", "style", "iframe", "object", "embed"],
+  });
+
+  return input !== sanitized;
+};
 
 const generateOtp = () => {
   return crypto.randomInt(100000, 999999).toString();
@@ -104,6 +116,16 @@ const checkRecentAttempts = async (email) => {
 const register = async (request) => {
   const user = validate(registerUserValidation, request);
 
+  if (isMaliciousInput(user.email) || isMaliciousInput(user.fullName)) {
+    console.warn("Potential XSS input detected:", {
+      email: user.email,
+      fullName: user.fullName,
+    });
+    throw new BadRequestError(
+      "Invalid input. Please check your data and try again."
+    );
+  }
+
   const isUserExists = await prismaClient.user.findUnique({
     where: { email: user.email },
     select: { id: true },
@@ -155,6 +177,16 @@ const register = async (request) => {
 const verifyRegistration = async (request, ip) => {
   const { email, otpCode } = request;
 
+  if (isMaliciousInput(email) || isMaliciousInput(otpCode)) {
+    console.warn("Potential XSS input during OTP verification:", {
+      email,
+      otpCode,
+    });
+    throw new BadRequestError(
+      "Invalid input. Please check your data and try again."
+    );
+  }
+
   const otpRecord = await prisma.otp.findFirst({
     where: { email },
     orderBy: { createdAt: "desc" },
@@ -201,6 +233,21 @@ const verifyRegistration = async (request, ip) => {
   }
 
   const userData = JSON.parse(otpRecord.userData);
+
+  const { error } = otpUserDataValidation.validate(userData);
+  if (error) {
+    console.warn("Invalid userData from OTP record:", error.message);
+    throw new BadRequestError("Invalid user data. Please register again.");
+  }
+
+  if (
+    isMaliciousInput(userData.fullName) ||
+    isMaliciousInput(userData.password)
+  ) {
+    console.warn("Potential XSS or tampering in userData:", userData);
+    throw new BadRequestError("Invalid user data. Please register again.");
+  }
+
   await prisma.otp.delete({ where: { id: otpRecord.id } });
 
   const userToCreate = {
@@ -209,31 +256,40 @@ const verifyRegistration = async (request, ip) => {
     password: userData.password,
   };
 
-  const result = await prismaClient.user.create({
-    data: userToCreate,
-    select: {
-      id: true,
-      fullName: true,
-      email: true,
-      role: true,
-      registeredAt: true,
-    },
-  });
+  const result = await prismaClient.$transaction(async (tx) => {
+    const newUser = await tx.user.create({
+      data: userToCreate,
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        role: true,
+        registeredAt: true,
+      },
+    });
 
-  await logger({
-    apiEndpoint: "/auth/register/verify",
-    message: "User registered successfully after OTP verification",
-    tableName: "User",
-    action: "CREATE",
-    recordId: result.id,
-    meta: result,
-    ip: ip,
+    await logger({
+      apiEndpoint: "/auth/register/verify",
+      message: "User registered successfully after OTP verification",
+      tableName: "User",
+      action: "CREATE",
+      recordId: newUser.id,
+      meta: newUser,
+      ip: ip,
+    });
+
+    return newUser;
   });
 
   return result;
 };
 
 const resendOtp = async (email) => {
+  if (!email || typeof email !== "string" || isMaliciousInput(email)) {
+    console.warn("Potential XSS or invalid email in resendOtp:", email);
+    throw new BadRequestError("Invalid email. Please check and try again.");
+  }
+
   const existingOtp = await prisma.otp.findFirst({
     where: { email },
     orderBy: { createdAt: "desc" },
@@ -291,6 +347,15 @@ const resendOtp = async (email) => {
 
 const login = async (request, ip) => {
   const credential = validate(loginValidation, request);
+
+  if (
+    isMaliciousInput(credential.email) ||
+    isMaliciousInput(credential.password)
+  ) {
+    console.warn("Potential XSS input in login:", credential);
+    throw new BadRequestError("Invalid credentials, please try again.");
+  }
+
   const user = await prismaClient.user.findUnique({
     where: {
       email: credential.email,
@@ -405,10 +470,11 @@ const getUserInformation = async (userId, ip) => {
       id: true,
       fullName: true,
       email: true,
+      registeredAt: true,
       // role: true,
-      // registeredAt: true,
     },
   });
+
   await logger({
     apiEndpoint: "/auth/me",
     message: "Get detailed user information",
@@ -451,6 +517,12 @@ const getAdminInformation = async (userId, ip) => {
 
 const editUserInformation = async (request, userId, ip) => {
   const { fullName } = validate(editUserInformationValidation, request);
+
+  if (isMaliciousInput(fullName)) {
+    console.warn("Potential XSS in fullName during user update:", fullName);
+    throw new BadRequestError("Invalid input. Please check and try again.");
+  }
+
   const result = await prismaClient.user.update({
     where: {
       id: userId,
@@ -461,9 +533,9 @@ const editUserInformation = async (request, userId, ip) => {
     select: {
       id: true,
       fullName: true,
-      email: true,
-      role: true,
-      registeredAt: true,
+      // email: true,
+      // role: true,
+      // registeredAt: true,
     },
   });
 
@@ -499,6 +571,15 @@ const deleteUser = async (userId, ip) => {
 
 const changePassword = async (request, userId, ip) => {
   request = validate(changePasswordValidation, request);
+
+  if (
+    isMaliciousInput(request.oldPassword) ||
+    isMaliciousInput(request.newPassword)
+  ) {
+    console.warn("Potential XSS or invalid input in password change:", request);
+    throw new BadRequestError("Invalid input. Please check and try again.");
+  }
+
   const user = await prismaClient.user.findUnique({
     where: {
       id: userId,

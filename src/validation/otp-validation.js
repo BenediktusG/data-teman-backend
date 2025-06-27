@@ -15,17 +15,17 @@ const verifyOtpValidation = Joi.object({
     .email({ tlds: { allow: false } })
     .required()
     .messages({
-      "string.email": "Please provide a valid email address",
-      "any.required": "Email is required",
+      "string.email": "Invalid credentials.",
+      "any.required": "Invalid credentials.",
     }),
   otpCode: Joi.string()
     .length(6)
     .pattern(/^[0-9]+$/)
     .required()
     .messages({
-      "string.length": "OTP code must be exactly 6 digits",
-      "string.pattern.base": "OTP code must contain only numbers",
-      "any.required": "OTP code is required",
+      "string.length": "Invalid credentials.",
+      "string.pattern.base": "Invalid credentials.",
+      "any.required": "Invalid credentials.",
     }),
 });
 

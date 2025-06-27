@@ -14,7 +14,7 @@ userRouter.patch("/auth/me", userController.editUserInformation);
 userRouter.delete("/auth/me", userController.deleteUser);
 userRouter.patch("/auth/password", userController.changePassword);
 
-// Data API
+// Data Teman API
 userRouter.post("/data", dataController.register);
 userRouter.get("/data", dataController.get);
 userRouter.get("/data/:dataId", dataController.getDataWithId);
