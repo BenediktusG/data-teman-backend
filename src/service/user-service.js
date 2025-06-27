@@ -18,6 +18,7 @@ import { Resend } from "resend";
 import crypto from "crypto";
 import xss from "xss";
 import { otpUserDataValidation } from "../validation/data-validation.js";
+import { ClientError } from "../error/client-error.js";
 
 const prisma = prismaClient;
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -121,7 +122,7 @@ const register = async (request) => {
       email: user.email,
       fullName: user.fullName,
     });
-    throw new BadRequestError(
+    throw new ClientError(
       "Invalid input. Please check your data and try again."
     );
   }
@@ -182,7 +183,7 @@ const verifyRegistration = async (request, ip) => {
       email,
       otpCode,
     });
-    throw new BadRequestError(
+    throw new ClientError(
       "Invalid input. Please check your data and try again."
     );
   }
@@ -237,7 +238,7 @@ const verifyRegistration = async (request, ip) => {
   const { error } = otpUserDataValidation.validate(userData);
   if (error) {
     console.warn("Invalid userData from OTP record:", error.message);
-    throw new BadRequestError("Invalid user data. Please register again.");
+    throw new ClientError("Invalid user data. Please register again.");
   }
 
   if (
@@ -245,7 +246,7 @@ const verifyRegistration = async (request, ip) => {
     isMaliciousInput(userData.password)
   ) {
     console.warn("Potential XSS or tampering in userData:", userData);
-    throw new BadRequestError("Invalid user data. Please register again.");
+    throw new ClientError("Invalid user data. Please register again.");
   }
 
   await prisma.otp.delete({ where: { id: otpRecord.id } });
@@ -287,7 +288,7 @@ const verifyRegistration = async (request, ip) => {
 const resendOtp = async (email) => {
   if (!email || typeof email !== "string" || isMaliciousInput(email)) {
     console.warn("Potential XSS or invalid email in resendOtp:", email);
-    throw new BadRequestError("Invalid email. Please check and try again.");
+    throw new ClientError("Invalid email. Please check and try again.");
   }
 
   const existingOtp = await prisma.otp.findFirst({
@@ -353,7 +354,7 @@ const login = async (request, ip) => {
     isMaliciousInput(credential.password)
   ) {
     console.warn("Potential XSS input in login:", credential);
-    throw new BadRequestError("Invalid credentials, please try again.");
+    throw new ClientError("Invalid credentials, please try again.");
   }
 
   const user = await prismaClient.user.findUnique({
@@ -520,7 +521,7 @@ const editUserInformation = async (request, userId, ip) => {
 
   if (isMaliciousInput(fullName)) {
     console.warn("Potential XSS in fullName during user update:", fullName);
-    throw new BadRequestError("Invalid input. Please check and try again.");
+    throw new ClientError("Invalid input. Please check and try again.");
   }
 
   const result = await prismaClient.user.update({
@@ -577,7 +578,7 @@ const changePassword = async (request, userId, ip) => {
     isMaliciousInput(request.newPassword)
   ) {
     console.warn("Potential XSS or invalid input in password change:", request);
-    throw new BadRequestError("Invalid input. Please check and try again.");
+    throw new ClientError("Invalid input. Please check and try again.");
   }
 
   const user = await prismaClient.user.findUnique({
